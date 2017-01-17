@@ -10,9 +10,9 @@ namespace ToDoModelConnections
 {
     public class ToDoContext : DbContext
     {
-        public ToDoContext() : base()
+        public ToDoContext() : base("Project1Todo")
         {
-
+            Database.SetInitializer<ToDoContext>(new CreateDatabaseIfNotExists<ToDoContext>());
         }
 
         public DbSet<List> Lists { get; set; }
