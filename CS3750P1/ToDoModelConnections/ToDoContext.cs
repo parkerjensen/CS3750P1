@@ -10,7 +10,8 @@ namespace ToDoModelConnections
 {
     public class ToDoContext : DbContext
     {
-        public ToDoContext() : base() {
+        public ToDoContext() : base()
+        {
 
         }
 

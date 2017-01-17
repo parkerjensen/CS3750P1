@@ -10,6 +10,8 @@ namespace ToDoDatabaseModels
     {
         public int listID { get; set; }
         public string listName { get; set; }
+        public DateTime? dateCompleted { get; set; }
+        public bool isCompleted { get; set; }
 
         public virtual ICollection<Item> Items { get; set; }
     }

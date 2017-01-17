@@ -10,6 +10,8 @@ namespace ToDoDatabaseModels
     {
         public int itemID { get; set; }
         public string itemName { get; set; }
-        public string itemDescription { get; set; }
+        //public string itemDescription { get; set; }
+        public bool isCompleted { get; set; }
+        public DateTime? dateCompleted { get; set; }
     }
 }
