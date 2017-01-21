@@ -1,0 +1,31 @@
+﻿@{ToDoContext db = new ToDoContext();}
+
+@{
+    ViewBag.Title = "View Lists";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+<p>Use this area to provide additional information.</p>
+
+@*Select Category: @Html.DropDownList("Categories", "Select")
+<input type="button" value="List" onclick="location.href='@Url.Action("ListByCategory", "Home",  new { id = @l.listID })'" />*@
+
+<div>
+    @using (Html.BeginForm("ListByCategory", "Home", FormMethod.Post))
+    {
+        @Html.DropDownList("catSubmit", new SelectList(db.Categories, "categoryName", "categoryName"), "--Select Category--")
+        <input type="submit"/>
+    }
+</div>
+<input type="button" value="List All" onclick="location.href='@Url.Action("ListAll", "Home")'" />
+
+@if (ViewBag.Category != null)
+{
+    <h2 align="center">- @ViewBag.Category -</h2>
+    foreach (List l in ViewBag.List)
+    {
+        <li>@l.listName<input type="button" value="View/Edit" onclick="location.href='@Url.Action("ViewEditList", "Home", new { id = @l.listID })'" /><input type="button" value="Delete" onclick="location.href='@Url.Action("DeleteList", "Home", new { id = @l.listID })'" /></li>
+    }
+}
+
