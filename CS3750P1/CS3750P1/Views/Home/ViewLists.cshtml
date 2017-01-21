@@ -4,9 +4,8 @@
     ViewBag.Title = "View Lists";
 }
 <h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<p>Select a category to filter lists from the drop down box below</p>
 
 <div>
     @using (Html.BeginForm("ListByCategory", "Home", FormMethod.Post))
