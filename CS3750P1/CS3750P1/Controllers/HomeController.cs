@@ -97,7 +97,7 @@ namespace CS3750P1.Controllers
             }
             else
             {
-                return RedirectToAction("ViewLists");
+                return RedirectToAction("ListAll");
             }
         }
     }

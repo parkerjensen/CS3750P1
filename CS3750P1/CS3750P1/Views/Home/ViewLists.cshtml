@@ -14,7 +14,7 @@
 <div>
     @using (Html.BeginForm("ListByCategory", "Home", FormMethod.Post))
     {
-        @Html.DropDownList("catSubmit", new SelectList(db.Categories, "categoryName", "categoryName"), "--Select Category--")
+        @Html.DropDownList("catSubmit", new SelectList(db.Categories, "categoryName", "categoryName"), "--All Categories--")
         <input type="submit"/>
     }
 </div>
@@ -23,9 +23,34 @@
 @if (ViewBag.Category != null)
 {
     <h2 align="center">- @ViewBag.Category -</h2>
-    foreach (List l in ViewBag.List)
+    @*foreach (List l in ViewBag.List)
     {
         <li>@l.listName<input type="button" value="View/Edit" onclick="location.href='@Url.Action("ViewEditList", "Home", new { id = @l.listID })'" /><input type="button" value="Delete" onclick="location.href='@Url.Action("DeleteList", "Home", new { id = @l.listID })'" /></li>
+    }*@
+
+
+<table class="table">
+    <tr>
+        <th>
+            List Name
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (List l in ViewBag.List)
+    {
+        <tr>
+            <td>
+                @l.listName
+            </td>
+            <td>
+                @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID }) |
+                    @*<a class="delete-link" href="@Url.Action("DeleteList", new { id = @l.listID })">Delete</a>*@
+                @Html.ActionLink("Delete", "DeleteList", "Home", new { id = @l.listID }, new { onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
+            </td>
+        </tr>
     }
+
+</table>
 }
 
