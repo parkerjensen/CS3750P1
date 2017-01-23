@@ -1,7 +1,7 @@
 USE [master]
 GO
 /****** Object:  Database [CS3750CMS]    Script Date: 1/19/2017 11:53:40 AM ******/
-CREATE DATABASE [CS3750CMS]
+CREATE DATABASE [Project1Todo]
  CONTAINMENT = NONE
  ON  PRIMARY 
 ( NAME = N'CS3750CMS', FILENAME = N'c:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\CS3750CMS.mdf' , SIZE = 3072KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
@@ -104,39 +104,7 @@ CREATE TABLE [dbo].[Category](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[CategoryList]    Script Date: 1/19/2017 11:53:41 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[CategoryList](
-	[categoryListID] [int] IDENTITY(1,1) NOT NULL,
-	[categoryID] [int] NULL,
-	[listID] [int] NULL,
- CONSTRAINT [PK_CategoryList] PRIMARY KEY CLUSTERED 
-(
-	[categoryListID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
 
-GO
-/****** Object:  Table [dbo].[Item]    Script Date: 1/19/2017 11:53:41 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Item](
-	[itemID] [int] IDENTITY(1,1) NOT NULL,
-	[itemName] [nvarchar](500) NULL,
-	[dateCompleted] [datetime] NULL,
-	[isCompleted] [bit] NULL,
- CONSTRAINT [PK_Item] PRIMARY KEY CLUSTERED 
-(
-	[itemID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
 /****** Object:  Table [dbo].[List]    Script Date: 1/19/2017 11:53:41 AM ******/
 SET ANSI_NULLS ON
 GO
@@ -154,6 +122,45 @@ CREATE TABLE [dbo].[List](
 ) ON [PRIMARY]
 
 GO
+
+/****** Object:  Table [dbo].[CategoryList]    Script Date: 1/19/2017 11:53:41 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CategoryList](
+	[categoryListID] [int] IDENTITY(1,1) NOT NULL,
+	[categoryID] [int] NULL,
+	[listID] [int] NULL,
+ CONSTRAINT [PK_CategoryList] PRIMARY KEY CLUSTERED
+ CONSTRAINT [FK_CategoryList_CategoryID] FOREIGN KEY REFERENCES Category (categoryID)
+ CONSTRAINT [FK_CategoryList_ListID] FOREIGN KEY REFERENCES List (listID)
+(
+	[categoryListID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[Item]    Script Date: 1/19/2017 11:53:41 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Item](
+	[itemID] [int] IDENTITY(1,1) NOT NULL,
+	[itemName] [nvarchar](500) NULL,
+	[dateCompleted] [datetime] NULL,
+	[isCompleted] [bit] NULL,
+	[listID] [int] NOT NULL,
+ CONSTRAINT [PK_Item] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [FK_Item_ListID] FOREIGN KEY REFERENCES List (listID)
+(
+	[itemID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
 USE [master]
 GO
 ALTER DATABASE [CS3750CMS] SET  READ_WRITE 
