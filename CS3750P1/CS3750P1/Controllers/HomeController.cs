@@ -59,6 +59,28 @@ namespace CS3750P1.Controllers
             ViewBag.Category = "All";
             return View("ViewLists");
         }
+        [HttpGet]
+        public ActionResult ViewEditList()
+        {
+            ToDoContext db = new ToDoContext();
+            int listID = 0;
+            string id = (string)Url.RequestContext.RouteData.Values["id"];
+            int.TryParse(id, out listID);
+
+            //create list of items based on listID
+            List<Item> itemList = new List<Item>();
+            foreach (Item item in db.Items)
+            {
+                if(item.listID == listID)
+                {
+                    itemList.Add(item);
+                }
+            }
+
+            ViewBag.Items = itemList;
+
+            return View("ListItems");
+        }
 
         [HttpPost]
         public ActionResult ListByCategory(string catSubmit)
