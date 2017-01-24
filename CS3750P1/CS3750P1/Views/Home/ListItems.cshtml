@@ -4,7 +4,7 @@
     ViewBag.Title = "View Lists";
 }
 
-<div class="jumbotron">
+<!--<div class="jumbotron">
     <h2>@ViewBag.Title.</h2>
     <p>Select a category to filter lists from the drop down box below</p>
     @using (Html.BeginForm("ListByCategory", "Home", FormMethod.Post))
@@ -18,34 +18,31 @@
             </div>
         </div>
     }
-</div>
+</div>-->
 
 <div class="container">
-    @if (ViewBag.Category != null)
+    @if (ViewBag.Items != null)
     {
-        <h2 align="center">- @ViewBag.Category -</h2>
+        <h2 align="center">- @ViewBag.List -</h2>
 
         <table class="table">
             <tr>
                 <th>
-                    List Name
+                    Item Name
                 </th>
                 <th>
                     Status
                 </th>
-                <th>
-                    Item Count
-                </th>
                 <th></th>
             </tr>
 
-            @foreach (List l in ViewBag.List)
+            @foreach (Item i in ViewBag.Items)
             {
                 <tr>
                     <td>
-                        @l.listName
+                        @i.itemName
                     </td>
-                    @if (l.isCompleted != null && (bool)l.isCompleted)
+                    @if (i.isCompleted != null && (bool)i.isCompleted)
                     {
                         <td>Complete</td>
                     }
@@ -54,11 +51,11 @@
                         <td>In progress</td>
                     }
                     <td>
-                        @CountItems(l.listID)
+                        @i.dateCompleted
                     </td>
                     <td>
-                        @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID }, null) |
-                        @Html.ActionLink("Delete", "DeleteList", "Home", new { id = @l.listID }, new { onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
+                        @Html.ActionLink("View/Edit", "ViewEditItem", "Home", new { id = @i.listID }) |
+                        @Html.ActionLink("Delete", "DeleteItem", "Home", new { id = @i.listID }, new { onclick = "return confirm('You are about to delete list \"" + i.itemName + "\". Click \"OK\" to confirm.');" })
                     </td>
                 </tr>
             }
