@@ -17,5 +17,7 @@ namespace CS3750P1
         public DateTime? dateCompleted { get; set; }
 
         public bool? isCompleted { get; set; }
+
+        public int listID { get; set; }
     }
 }
