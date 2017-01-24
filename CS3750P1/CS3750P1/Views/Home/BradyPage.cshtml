@@ -1,0 +1,82 @@
+﻿@{ToDoContext ctx = new ToDoContext();}
+
+@{
+    ViewBag.Title = "Categories";
+}
+<h2>@ViewBag.Title.</h2>
+@*<h3>@ViewBag.Message</h3>
+
+<h3>@ViewBag.MyMessageToUsers</h3>
+<h3>@Html.TextBox("CategoryText")</h3>*@
+<h4>@Html.CheckBox("CheckTheBox")</h4>
+
+<h4>@ViewBag.firstCategoryItem</h4>
+
+<div>
+    @using (Html.BeginForm("ListByCategory", "Home", FormMethod.Post))
+    {
+        @Html.ListBox("catSubmit", new SelectList(ctx.Categories, "categoryName", "categoryName"), "--Select Category--")
+        <input type="submit" />
+    }
+</div>
+
+@using (Html.BeginForm("AddCategory", "Home", FormMethod.Post))
+{
+    <div>
+        <form method="POST">
+            <input name="name" type="text" placeholder="Type Category Name">
+            <button name="addOrDeleteCategoryButton" id="AddButton" type="submit" value="addCat">Add Category</button>
+            <button name="addOrDeleteCategoryButton" id="DeleteButton" type="submit" value="delCat">Delete Category</button>
+        </form>
+    </div>
+}
+
+
+
+
+
+
+
+@*@model CS3750P1.Models.CategorySelectionViewModel
+
+@{
+    ViewBag.Title = "Category";
+}
+
+<h2>Category</h2>*@
+
+@*took out "Category" as second argument*@
+@*@using (Html.BeginForm("SubmitSelected", "Home", FormMethod.Post, new { encType = "multipart/form-data", name = "myform" }))
+{
+    <table class="table">
+        <tr>
+            <th>
+                Select
+            </th>
+            <th>
+                categoryName
+            </th>
+            <th></th>
+        </tr>
+        @Html.EditorFor(model => model.Category)
+    </table>
+    <hr />
+    <br />
+    <input type="submit" name="operation" id="submit" value="Submit Selected" />
+}*@
+
+
+@*@using (Html.BeginForm("MyAction", "HomeController", FormMethod.Post))
+    {
+    <input type="submit" name="submitButton" value="Send" />
+    <input type="submit" name="submitButton" value="Cancel" />
+    }*@
+<p>Use this area to provide additional information.</p>
+
+@*<script type="text\javascript">
+        $(function(){
+            $("input#MyButton").on('click', function(){
+            // Do what you want.
+            });
+        });
+    </script>*@

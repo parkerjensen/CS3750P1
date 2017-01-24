@@ -200,6 +200,7 @@
     <Compile Include="Category.cs" />
     <Compile Include="CategoryList.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -207,6 +208,8 @@
     </Compile>
     <Compile Include="Item.cs" />
     <Compile Include="List.cs" />
+    <Compile Include="Models\CategorySelectionViewModel.cs" />
+    <Compile Include="Models\SelectCategoryEditorViewModel.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -273,6 +276,10 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
+    <Content Include="Views\Home\AddCategory.cshtml" />
+    <Content Include="Views\Category\EditorTemplates\SelectCategoryEditorViewModel.cshtml" />
+    <Content Include="Views\Category\CategoryIndex.cshtml" />
+    <Content Include="Views\Home\BradyPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
