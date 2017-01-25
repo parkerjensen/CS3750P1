@@ -57,7 +57,7 @@
                         @CountItems(l.listID)
                     </td>
                     <td>
-                        @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID }, null) |
+                        @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID, name = @l.listName }, null) |
                         @Html.ActionLink("Delete", "DeleteList", "Home", new { id = @l.listID }, new { onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
                     </td>
                 </tr>

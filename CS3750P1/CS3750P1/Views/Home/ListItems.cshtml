@@ -1,79 +1,103 @@
 ﻿@{ToDoContext db = new ToDoContext();}
 
+@model CS3750P1.Models.CategorySelectionViewModel
+
 @{
     ViewBag.Title = "View Lists";
 }
+<head>
+    <title>@ViewBag.Title</title>
+</head>
+    <div class="container">
+        @if (ViewBag.Items != null)
+        {
+            <h2 align="center">- @ViewBag.listName -</h2>
 
-<!--<div class="jumbotron">
-    <h2>@ViewBag.Title.</h2>
-    <p>Select a category to filter lists from the drop down box below</p>
-    @using (Html.BeginForm("ListByCategory", "Home", FormMethod.Post))
+            <table class="table">
+                <tr>
+                    <th>
+                        Item Name
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (Item i in ViewBag.Items)
+                {
+                    <tr>
+                        <td>
+                            @i.itemName
+                        </td>
+                        @if (i.isCompleted != null && (bool)i.isCompleted)
+                    {
+                            <td>Complete</td>
+                        }
+                        else
+                        {
+                            <td>In progress</td>
+                        }
+                        <td>
+                            @i.dateCompleted
+                        </td>
+                        <td>
+                            @Html.ActionLink("View/Edit", "ViewEditItem", "Home", new { id = @i.listID }) |
+                            @Html.ActionLink("Delete", "DeleteItem", "Home", new { id = @i.listID }, new { onclick = "return confirm('You are about to delete list \"" + i.itemName + "\". Click \"OK\" to confirm.');" })
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+    <dvi>
+    @using (Html.BeginForm("CategoryIndex", "Home", FormMethod.Post, new { encType = "multipart/form-data", name = "myform" }))
     {
-        @Html.DropDownList("catSubmit", new SelectList(db.Categories, "categoryName", "categoryName"), "--All Categories--", new { @class = "form-control" })
-
-        <div class='btn-toolbar'>
-            <div class='btn-group'>
-                <input type="submit" class="btn btn-info btn-sm" value="Submit">
-                <a class="btn btn-primary btn-sm" onclick="location.href='@Url.Action("ListAll", "Home")'">List All</a>
-            </div>
-        </div>
-    }
-</div>-->
-
-<div class="container">
-    @if (ViewBag.Items != null)
-    {
-        <h2 align="center">- @ViewBag.List -</h2>
-
         <table class="table">
             <tr>
                 <th>
-                    Item Name
+                    Select
                 </th>
                 <th>
-                    Status
+                    categoryName
                 </th>
                 <th></th>
             </tr>
-
-            @foreach (Item i in ViewBag.Items)
-            {
-                <tr>
-                    <td>
-                        @i.itemName
-                    </td>
-                    @if (i.isCompleted != null && (bool)i.isCompleted)
-                    {
-                        <td>Complete</td>
-                    }
-                    else
-                    {
-                        <td>In progress</td>
-                    }
-                    <td>
-                        @i.dateCompleted
-                    </td>
-                    <td>
-                        @Html.ActionLink("View/Edit", "ViewEditItem", "Home", new { id = @i.listID }) |
-                        @Html.ActionLink("Delete", "DeleteItem", "Home", new { id = @i.listID }, new { onclick = "return confirm('You are about to delete list \"" + i.itemName + "\". Click \"OK\" to confirm.');" })
-                    </td>
-                </tr>
-            }
+            @Html.EditorFor(model => model.Category);
         </table>
+        <hr />
+        <br />
+        <input type="submit" name="operation" id="submit" value="Submit Selected" />
+        <a></a>
     }
-</div>
+        <p></p>
 
-@functions
-{
-    public int CountItems(int id) //NOT DONE YET BECAUSE THERES NO LINK BETWEEN ITEMS AND LISTS IN DB MODEL
-    {
-        ToDoContext db = new ToDoContext();
-        int count = 0;
-        foreach(Item i in db.Items)
+        <p>@ViewBag.message</p>
+
+        @*first argument use to be AddCategory, second Home*@
+        @using (Html.BeginForm("CategoryIndex", "Home", FormMethod.Post))
         {
-            count++;
+            <div>
+                <form method="POST">
+                    <input name="name" type="text" placeholder="Type Category Name">
+                    <button name="addOrDeleteCategoryButton" id="AddButton" type="submit" value="addCat">Add Category</button>
+                    <button name="addOrDeleteCategoryButton" id="DeleteButton" type="submit" value="delCat">Delete Category</button>
+                </form>
+            </div>
         }
-        return count;
+    </dvi>
+
+    @functions
+{
+        public int CountItems(int id) //NOT DONE YET BECAUSE THERES NO LINK BETWEEN ITEMS AND LISTS IN DB MODEL
+        {
+            ToDoContext db = new ToDoContext();
+            int count = 0;
+            foreach (Item i in db.Items)
+            {
+                count++;
+            }
+            return count;
+        }
     }
-}
 
