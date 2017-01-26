@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "SelectCategoryEditorViewModel";
+}
+
+
+@model CS3750P1.Models.SelectCategoryEditorViewModel
+<tr>
+    <td style="text-align:center">
+        @Html.CheckBoxFor(model => model.Selected)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.categoryName)
+    </td>
+    <td>
+        @Html.HiddenFor(model => model.id)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.listIDforButton)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+        @Html.ActionLink("Details", "Details", new { id = Model.id }) |
+        @Html.ActionLink("Delete", "Delete", new { id = Model.id })
+    </td>
+</tr>
+
