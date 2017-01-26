@@ -85,7 +85,7 @@ namespace CS3750P1.Controllers
             foreach (var category in Db.Categories)
             {
 
-                var editorViewModel = new SelectCategoryEditorViewModel()
+                var editorViewModel = new CategorySelect()
                 {
                     // if (category.categoryID == listID)
                     // {
@@ -93,7 +93,7 @@ namespace CS3750P1.Controllers
                     id = category.categoryID,
                     categoryName = category.categoryName, // string.Format("{0} {1}", category.categoryName),
                     Selected = false,
-                    listIDforButton = listID
+                    //listIDforButton = listID
                     // }
                 };
                 //editorViewModel.Selected = true;

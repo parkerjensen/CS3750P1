@@ -5,10 +5,12 @@ namespace CS3750P1.Models
 {
     public class CategorySelectionViewModel
     {
-        public List<SelectCategoryEditorViewModel> Category { get; set; }
+        public List<CategorySelect> Category { get; set; }
+
+        public int changedCatID { get; set; }
         public CategorySelectionViewModel()
         {
-            this.Category = new List<SelectCategoryEditorViewModel>();
+            this.Category = new List<CategorySelect>();
         }
         public IEnumerable<int> getSelectedIds()
         {

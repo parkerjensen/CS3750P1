@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CS3750P1.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -170,27 +171,134 @@ namespace CS3750P1.Controllers
             ViewBag.Category = "All";
             return View("ViewLists");
         }
-        [HttpGet]
+        
         public ActionResult ViewEditList()
         {
-            ToDoContext db = new ToDoContext();
+            var model = new EditListModel();
+            ;
             int listID = 0;
             string id = (string)Url.RequestContext.RouteData.Values["id"];
             int.TryParse(id, out listID);
 
-            //create list of items based on listID
-            List<Item> itemList = new List<Item>();
-            foreach (Item item in db.Items)
+            using (ToDoContext db = new ToDoContext())
             {
-                if(item.listID == listID)
+                model.listName = db.Lists.Where(x => x.listID == listID).Single().listName;
+                model.listID = listID;
+                //create list of items based on listID
+                model.items = db.Items.Where(x => x.listID == listID).ToList();
+                var selectedCats = db.CategoryLists.Where(x => x.listID == listID).Select(y => y.categoryID);
+                model.categories = new List<CategorySelect>();
+                foreach (Category cat in db.Categories)
                 {
-                    itemList.Add(item);
+                    var tempCat = new CategorySelect();
+                    tempCat.id = cat.categoryID;
+                    tempCat.categoryName = cat.categoryName;
+                    if (selectedCats.Contains(cat.categoryID))
+                    {
+                        tempCat.Selected = true;
+                    }
+                    else
+                    {
+                        tempCat.Selected = false;
+                    }
+                    model.categories.Add(tempCat);
                 }
             }
+            return View("ListItems", model);
+        }
+        
+        [HttpPost]
+        public ActionResult EditItems(EditListModel model, string button)
+        {
+            ViewBag.CatMessage = "";
+            using(ToDoContext db = new ToDoContext())
+            {
+                if (button == "Update")
+                {
+                    for (var i = 0; i < model.items.Count(); i++)
+                    {
+                        db.Entry(model.items[i]).State = System.Data.Entity.EntityState.Modified;
+                        
+                    }
+                    
+                }
 
-            ViewBag.Items = itemList;
+                else
+                {
+                    int completed = 0;
+                    int.TryParse(button, out completed);
+                    db.Items.Where(x => x.itemID == completed).Single().isCompleted = true;
+                    model.items.Where(x => x.itemID == completed).Single().isCompleted = true;
+                    db.Items.Where(x => x.itemID == completed).Single().dateCompleted = DateTime.Now;
+                    model.items.Where(x => x.itemID == completed).Single().dateCompleted = DateTime.Now;
+                }
 
-            return View("ListItems");
+                ModelState.Clear();
+                db.SaveChanges();
+            }
+            return View("ListItems", model);
+        }
+
+        public ActionResult UpdateCategories(EditListModel model, string button, string newCat = "")
+        {
+            ViewBag.CatMessage = "";
+            using (ToDoContext db = new ToDoContext())
+            {
+                if (button == "Update")
+                {
+                    for (var i = 0; i < model.items.Count(); i++)
+                    {
+                        db.Entry(model.items[i]).State = System.Data.Entity.EntityState.Modified;
+
+                    }
+
+                }
+                if (button == "NewCat")
+                {
+
+                    if(db.Categories.Where(x => x.categoryName == newCat).Count() > 0)
+                    {
+                        ViewBag.CatMessage = "That category already exists.";
+                    }
+                    else
+                    {
+                        Category Cat = new Category();
+                        Cat.categoryName = newCat;
+                        db.Categories.Add(Cat);
+                        db.SaveChanges();
+                        var selectedCats = db.CategoryLists.Where(x => x.listID == model.listID).Select(y => y.categoryID);
+                        model.categories = new List<CategorySelect>();
+                        foreach (Category cat in db.Categories)
+                        {
+                            var tempCat = new CategorySelect();
+                            tempCat.id = cat.categoryID;
+                            tempCat.categoryName = cat.categoryName;
+                            if (selectedCats.Contains(cat.categoryID))
+                            {
+                                tempCat.Selected = true;
+                            }
+                            else
+                            {
+                                tempCat.Selected = false;
+                            }
+                            model.categories.Add(tempCat);
+                        }
+                    }
+                }
+                else
+                {
+                    int delete = 0;
+                    int.TryParse(button, out delete);
+                    db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
+                    model.categories.Remove(model.categories.Where(x => x.id == delete).Single());
+                    //db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
+                    //model.categories.Remove(model.categories.Where(x => x.id == delete).Single());
+                }
+
+                ModelState.Clear();
+                db.SaveChanges();
+            }
+            return View("ListItems", model);
         }
 
         [HttpPost]
