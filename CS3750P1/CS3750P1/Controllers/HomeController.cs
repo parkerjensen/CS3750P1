@@ -136,30 +136,44 @@ namespace CS3750P1.Controllers
         //********************* ITEM FUNCTIONS**********************
         //**********************************************************
         //**********************************************************
-        public ActionResult ViewEditList(string name = "", string button = "", int itemID = 0, string itemName = "")
+        [HttpGet]
+        public ActionResult ViewEditList()
         {
+            ToDoContext db = new ToDoContext();
             int listID = 0;
             string id = (string)Url.RequestContext.RouteData.Values["id"];
             int.TryParse(id, out listID);
-            using (ToDoContext db = new ToDoContext())
+
+            var model = new CategorySelectionViewModel();
+
+
+            var list = db.Lists.Where(x => x.listID == listID);
+            ViewBag.listName = list.First().listName;
+
+
+            //create list of items based on listID
+            List<Item> itemList = db.Items.Where(x => x.listID == listID).ToList();
+
+            
+            SelectCategoryEditorViewModel tempcat;
+            foreach (Category cat in db.Categories)
             {
-                if (button == "completeItem")
-                {
-                    Item tempItem = db.Items.Where(x => x.itemID == itemID).Single();
-                    tempItem.isCompleted = true;
-                }
-
-
-                var list = db.Lists.Where(x => x.listID == listID).Single();
-                ViewBag.listName = list.listName;
-                ViewBag.listID = listID;
-
-                db.SaveChanges();
-                //create list of items based on listID
-                List<Item> itemList = db.Items.Where(x => x.listID == listID).ToList();
-
-                ViewBag.Items = itemList;
+                tempcat = new SelectCategoryEditorViewModel(cat.categoryName, cat.categoryID);
+                model.Category.Add(tempcat);
             }
+
+            foreach (CategoryList catlist in db.CategoryLists)
+            {
+                if(catlist.listID == listID)
+                {
+                    model.Category.Find(x => x.id == catlist.categoryID).Selected = true;
+                }
+            }
+
+            ViewBag.Items = itemList;
+
+            return View("ListItems", model);
+        }
 
 
         //**********************************************************
@@ -168,6 +182,11 @@ namespace CS3750P1.Controllers
         //**********************************************************
         //**********************************************************
 
+
+        public ActionResult CategoryIndex(string name, string addOrDeleteCategoryButton, CategorySelectionViewModel modelButton, int listID = 1)
+        {
+            //int listID = 2;
+            //currentListID = listID;
 
             using (var ctx = new ToDoContext())
             {
@@ -180,7 +199,7 @@ namespace CS3750P1.Controllers
                 }
             }
             // listID = 2;
-            switch (button)
+            switch (addOrDeleteCategoryButton)
             {
                 case "addCat":
                     @ViewBag.message = "You added a Category:" + name;
@@ -230,28 +249,43 @@ namespace CS3750P1.Controllers
                     //return View(model);
 
             }
-
-            //Create a list of CategorySelection objects that have a category and a bool selected to 
-            //populate with all the categories and whether or not they are selected
-            List<CategorySelection> catSelect = new List<CategorySelection>();
-            var catsForList = Db.CategoryLists.Where(x => x.listID == listID);
-
+            var model = new CategorySelectionViewModel();
             foreach (var category in Db.Categories)
             {
-                var tempCatSelect = new CategorySelection();
-                tempCatSelect.category = category;
-                tempCatSelect.selected = false;
-                var catSelected = catsForList.Where(x => x.categoryID == category.categoryID);
-                if (catSelected.Count() > 0)
+
+                var editorViewModel = new SelectCategoryEditorViewModel()
                 {
-                    tempCatSelect.selected = true;
+                    // if (category.categoryID == listID)
+                    // {
+                    //listIDforButton = currentListID,
+                    id = category.categoryID,
+                    categoryName = category.categoryName, // string.Format("{0} {1}", category.categoryName),
+                    Selected = false,
+                    listIDforButton = listID
+                    // }
+                };
+                //editorViewModel.Selected = true;
+                foreach (CategoryList cl in Db.CategoryLists)
+                {
+                    if (cl.categoryID == category.categoryID && cl.listID == listID) //listID == listID)
+                    {
+                        editorViewModel.Selected = true;
+                    }
                 }
-                catSelect.Add(tempCatSelect);
+
+                model.Category.Add(editorViewModel);
+
             }
 
-            ViewBag.categories = catSelect;
+            // get the ids of the items selected:
+            var selectedIds = modelButton.getSelectedIds();
+            // Use the ids to retrieve the records for the selected people
+            // from the database:
+            var selectedCategory = from x in Db.Categories
+                                   where selectedIds.Contains(x.categoryID)
+                                   select x;
 
-            /*
+
             foreach (CategoryList cl in Db.CategoryLists)
             {
                 if (cl.listID == listID)
@@ -268,7 +302,7 @@ namespace CS3750P1.Controllers
 
                 }
             }
-            
+
             Db.SaveChanges();
 
             // Process according to your requirements:
@@ -287,8 +321,8 @@ namespace CS3750P1.Controllers
             }
 
             Db.SaveChanges();
-            */
-            return View("ListItems");
+
+            return View("ListItems", model);
             //return View(model);
         }
 

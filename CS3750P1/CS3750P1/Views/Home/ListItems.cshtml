@@ -1,5 +1,7 @@
 ﻿@{ToDoContext db = new ToDoContext();}
 
+@model CS3750P1.Models.CategorySelectionViewModel
+
 @{
     ViewBag.Title = "View Lists";
 }
@@ -9,8 +11,6 @@
     <div class="container">
         @if (ViewBag.Items != null)
         {
-            using (Html.BeginForm("ViewEditList", "Home", FormMethod.Post, new { encType = "multipart/form-data", name = "myform", id = ViewBag.listID }))
-            {
             <h2 align="center">- @ViewBag.listName -</h2>
 
             <table class="table">
@@ -21,23 +21,17 @@
                     <th>
                         Status
                     </th>
-                    <th>
-                        Date Completed
-                    </th>
-                    <th>
-                        Complete
-                    </th>
+                    <th></th>
                 </tr>
 
-                @for (int i = 0; i < Enumerable.Count(ViewBag.Items); i++)
+                @foreach (Item i in ViewBag.Items)
                 {
                     <tr>
                         <td>
-                            @Html.Hidden("itemID"+i, (int)ViewBag.Items[i].itemID)
-                            @Html.TextBox("itemName"+i, (string)ViewBag.Items[i].itemName)
+                            @i.itemName
                         </td>
-                        @if (ViewBag.Items[i].isCompleted != null && (bool)ViewBag.Items[i].isCompleted)
-                        {
+                        @if (i.isCompleted != null && (bool)i.isCompleted)
+                    {
                             <td>Complete</td>
                         }
                         else
@@ -45,20 +39,19 @@
                             <td>In progress</td>
                         }
                         <td>
-                            @ViewBag.Items[i].dateCompleted
+                            @i.dateCompleted
                         </td>
                         <td>
-                            <button name="button" id="CompleteButton" type="submit" value="completeItem">Complete Button</button>
-                            <!--@Html.ActionLink("Complete", "ViewEditList", "Home", new { id = @ViewBag.Items[i].listID, itemID = ViewBag.Items[i].itemID, button = "completeItem" })-->
+                            @Html.ActionLink("View/Edit", "ViewEditItem", "Home", new { id = @i.listID }) |
+                            @Html.ActionLink("Delete", "DeleteItem", "Home", new { id = @i.listID }, new { onclick = "return confirm('You are about to delete list \"" + i.itemName + "\". Click \"OK\" to confirm.');" })
                         </td>
                     </tr>
                 }
             </table>
-                }
-            }
+        }
     </div>
     <dvi>
-    @using (Html.BeginForm("ViewEditList", "Home", FormMethod.Post, new { encType = "multipart/form-data", name = "myform", id= ViewBag.listID }))
+    @using (Html.BeginForm("CategoryIndex", "Home", FormMethod.Post, new { encType = "multipart/form-data", name = "myform" }))
     {
         <table class="table">
             <tr>
@@ -69,23 +62,12 @@
                     categoryName
                 </th>
                 <th></th>
-                @foreach (CategorySelection i in ViewBag.categories)
-                {
-
-                <tr>
-                    <td>
-                        @Html.CheckBox(" ", i.selected)
-                    </td>  
-                    <td>
-                        @i.category.categoryName
-                    </td>
-                </tr>
-                }
+            </tr>
+            @Html.EditorFor(model => model.Category);
         </table>
         <hr />
         <br />
-        //<input type="submit" name="button" id="submit" value="Submit Selected" />
-        <button name="button" id="btnSubmit" type="submit" value="submitCat">Submit Selected</button>
+        <input type="submit" name="operation" id="submit" value="Submit Selected" />
         <a></a>
     }
         <p></p>
@@ -93,16 +75,29 @@
         <p>@ViewBag.message</p>
 
         @*first argument use to be AddCategory, second Home*@
-        @using (Html.BeginForm("ViewEditList", "Home", FormMethod.Post))
+        @using (Html.BeginForm("CategoryIndex", "Home", FormMethod.Post))
         {
             <div>
                 <form method="POST">
                     <input name="name" type="text" placeholder="Type Category Name">
-                    <button name="button" id="AddButton" type="submit" value="addCat">Add Category</button>
-                    <button name="button" id="DeleteButton" type="submit" value="delCat">Delete Category</button>
+                    <button name="addOrDeleteCategoryButton" id="AddButton" type="submit" value="addCat">Add Category</button>
+                    <button name="addOrDeleteCategoryButton" id="DeleteButton" type="submit" value="delCat">Delete Category</button>
                 </form>
             </div>
         }
     </dvi>
 
+    @functions
+{
+        public int CountItems(int id) //NOT DONE YET BECAUSE THERES NO LINK BETWEEN ITEMS AND LISTS IN DB MODEL
+        {
+            ToDoContext db = new ToDoContext();
+            int count = 0;
+            foreach (Item i in db.Items)
+            {
+                count++;
+            }
+            return count;
+        }
+    }
 
