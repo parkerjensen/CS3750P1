@@ -68,13 +68,16 @@
 
 @functions
 {
-    public int CountItems(int id) //NOT DONE YET BECAUSE THERES NO LINK BETWEEN ITEMS AND LISTS IN DB MODEL
+    public int CountItems(int id)
     {
         ToDoContext db = new ToDoContext();
         int count = 0;
         foreach(Item i in db.Items)
         {
-            count++;
+            if (i.listID == id)
+            {
+                count++;
+            }
         }
         return count;
     }
