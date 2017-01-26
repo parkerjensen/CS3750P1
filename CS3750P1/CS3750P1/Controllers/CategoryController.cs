@@ -49,8 +49,8 @@ namespace CS3750P1.Controllers
                         }
                         if (!inDB)
                         {
-                            Category newCat = new Category() { categoryName = name };
-                            ctx.Categories.Add(newCat);
+                            Category catTest = new Category() { categoryName = name };
+                            ctx.Categories.Add(catTest);
                         }
                         ctx.SaveChanges();
                     }
@@ -108,6 +108,16 @@ namespace CS3750P1.Controllers
                 model.Category.Add(editorViewModel);
 
             }
+
+
+
+
+
+
+
+
+
+
 
             // get the ids of the items selected:
             var selectedIds = modelButton.getSelectedIds();

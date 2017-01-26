@@ -7,17 +7,5 @@
         public string categoryName { get; set; }
 
         public int listIDforButton { get; set; }
-
-        public SelectCategoryEditorViewModel()
-        {
-
-        }
-
-        public SelectCategoryEditorViewModel(string catName, int id)
-        {
-            this.categoryName = catName;
-            this.id = id;
-            this.Selected = false;
-        }
     }
 }

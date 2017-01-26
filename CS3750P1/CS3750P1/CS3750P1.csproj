@@ -279,11 +279,12 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Test.cshtml" />
     <Content Include="Views\Home\AddCategory.cshtml" />
-    <Content Include="Views\Home\EditorTemplates\SelectCategoryEditorViewModel.cshtml" />
+    <Content Include="Views\Category\EditorTemplates\SelectCategoryEditorViewModel.cshtml" />
     <Content Include="Views\Category\CategoryIndex.cshtml" />
     <Content Include="Views\Home\BradyPage.cshtml" />
     <Content Include="Views\Home\ViewLists.cshtml" />
     <Content Include="Views\Home\ListItems.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
