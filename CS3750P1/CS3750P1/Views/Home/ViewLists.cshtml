@@ -58,7 +58,7 @@
                     </td>
                     <td>
                         @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID }, null) |
-                        @Html.ActionLink("Delete", "DeleteList", "Home", new { id = @l.listID }, new { onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
+                        @Html.ActionLink(linkText: "Delete", actionName: "DeleteList", controllerName: "Home", routeValues: new { id = @l.listID, cat = @ViewBag.Category }, htmlAttributes: new { onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
                     </td>
                 </tr>
             }

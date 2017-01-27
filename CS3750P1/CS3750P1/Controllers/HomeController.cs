@@ -157,8 +157,8 @@ namespace CS3750P1.Controllers
         {
             ToDoContext db = new ToDoContext();
             ViewBag.Message = "This is the list view page.";
-            ViewBag.List = null;
-            ViewBag.Category = null;
+            ViewBag.List = new List<List>(db.Lists);
+            ViewBag.Category = "All";
             return View();
         }
 
@@ -232,6 +232,67 @@ namespace CS3750P1.Controllers
             {
                 return RedirectToAction("ListAll");
             }
+        }
+
+        public ActionResult DeleteList(int id, string cat)
+        {
+            ToDoContext db = new ToDoContext();
+            List dList = new List();
+            //find id
+            foreach(List l in db.Lists)
+            {
+                if (id == l.listID)
+                {
+                    dList = l;
+                    break;
+                }
+            }
+            try
+            {
+                //remove in category list table
+                foreach (CategoryList cl in db.CategoryLists)
+                {
+                    if (cl.listID == dList.listID)
+                    {
+                        db.CategoryLists.Remove(cl);
+                    }
+                }
+                db.SaveChanges();
+
+                //remove items referencing list
+                foreach (Item i in db.Items)
+                {
+                    if (i.listID == dList.listID)
+                    {
+                        db.Items.Remove(i);
+                    }
+                }
+                db.SaveChanges();
+
+                //remove from list table  
+                foreach (List l in db.Lists)
+                {
+                    if (l.listID == dList.listID)
+                    {
+                        db.Lists.Remove(dList);
+                        break;
+                    }
+                }
+                db.SaveChanges();
+
+                ViewBag.Message = "Successfully deleted list " + dList.listName;
+                ViewBag.List = new List<List>(db.Lists);
+                ViewBag.Category = cat;
+                return View("ViewLists");
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "There was an error deleting " + dList.listName;
+                ViewBag.List = new List<List>(db.Lists);
+                ViewBag.Category = cat;
+                return View("ViewLists");
+            }
+            
         }
     }
 }
