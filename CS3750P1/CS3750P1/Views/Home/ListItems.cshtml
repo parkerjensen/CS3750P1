@@ -49,27 +49,25 @@
 </head>
 
 <div class="container">
-    @if (Model.items != null)
-    {
         <h2 align="center">- @Model.listName -</h2>
 
 
-            using (Html.BeginForm("EditItems", "Home"))
-            {
-                <table class="table">
-                    <tr>
-                        <th>
-                            Item Name
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th></th>
-                    </tr>
-                    @Html.HiddenFor(m => m.listName)
-                    @Html.HiddenFor(m => m.listID)
-                    @for (int i = 0; i < Model.items.Count; i++)
-                    {
+        @using (Html.BeginForm("EditItems", "Home"))
+        {
+            <table class="table">
+                <tr>
+                    <th>
+                        Item Name
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+                @Html.HiddenFor(m => m.listName)
+                @Html.HiddenFor(m => m.listID)
+                @for (int i = 0; i < Model.items.Count; i++)
+                {
                     <tr>
                         <td>
                             @Html.HiddenFor(m => m.items[i].itemID)
@@ -87,28 +85,48 @@
                             <td>Not Done</td>
                         }
                         <td>
-                            <button type="submit" id="Complete" name="button" value=@Model.items[i].itemID>Complete</button>
+                            <button type="submit" id="Complete" name="button" value=@Model.items[i].itemID onclick="@Model.changed = CompleteItem">Complete</button>
                         </td>
                     </tr>
-
-                    }
-                    @for (int i = 0; i < Model.categories.Count; i++)
-                    {
-                        @Html.HiddenFor(m => m.categories[i].categoryName)
-                        @Html.HiddenFor(m => m.categories[i].id)
-                        @Html.HiddenFor(m => m.categories[i].Selected)
-                    }
-                    
+                }
                 </table>
+
+                    <table class="catTable">
+                        <tr>
+                            <th>
+                                Selected
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th></th>
+                        </tr>
+                        @for (int i = 0; i < Model.categories.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.HiddenFor(m => m.categories[i].categoryName)
+                                    @Html.HiddenFor(m => m.categories[i].id)
+                                    @Html.CheckBoxFor(m => m.categories[i].Selected)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => m.categories[i].categoryName)
+                                </td>
+                                <td>
+                                    <button type="submit" id="Delete" name="button" value=Cat@Model.categories[i].id onclick="@Model.changed = DeleteCat">Delete</button>
+                                </td>
+                             </tr>
+                        }
+
+                    </table>
                 <button type="submit" id="Update" name="button" value="Update">Save Changes</button>
             }
-    }
-
+@*
     @if (Model.items != null)
     {
         <h2 align="center">- Categories -</h2>
 
-        
+
             using (Html.BeginForm("UpdateCategories", "Home"))
             {
                 <table class="table">
@@ -164,8 +182,8 @@
                 </div>
 
             }
-        
-    }
+
+    }*@
         
 </div>
 
@@ -195,4 +213,5 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
 </script>

@@ -208,7 +208,7 @@ namespace CS3750P1.Controllers
         }
         
         [HttpPost]
-        public ActionResult EditItems(EditListModel model, string button)
+        public ActionResult EditItems(EditListModel model, string button, string newCat = "")
         {
             ViewBag.CatMessage = "";
             using(ToDoContext db = new ToDoContext())
@@ -220,10 +220,65 @@ namespace CS3750P1.Controllers
                         db.Entry(model.items[i]).State = System.Data.Entity.EntityState.Modified;
                         
                     }
+                    for (var i = 0; i < model.categories.Count(); i++)
+                    {
+                        if (model.categories[i].Selected == true)
+                        {
+                            var catID = model.categories[i].id;
+                            var listID = model.listID;
+                            if(db.CategoryLists.Where(x => x.categoryID == catID && x.listID == listID).Count() < 1)
+                            {
+                                var tempCatList = new CategoryList();
+                                tempCatList.categoryID = model.categories[i].id;
+                                tempCatList.listID = model.listID;
+                                db.CategoryLists.Add(tempCatList);
+                            }
+                        }
+                        else
+                        {
+                            var catID = model.categories[i].id;
+                            var listID = model.listID;
+                            if (db.CategoryLists.Where(x => x.categoryID == catID && x.listID == listID).Count() > 0)
+                            {
+                                db.CategoryLists.Remove(db.CategoryLists.Where(x => x.categoryID == catID && x.listID == listID).First());
+                            }
+                        }
+                    }
                     
                 }
+                else if (button == "NewCat")
+                {
 
-                else
+                    if (db.Categories.Where(x => x.categoryName == newCat).Count() > 0)
+                    {
+                        ViewBag.CatMessage = "That category already exists.";
+                    }
+                    else
+                    {
+                        Category Cat = new Category();
+                        Cat.categoryName = newCat;
+                        db.Categories.Add(Cat);
+                        db.SaveChanges();
+                        var selectedCats = db.CategoryLists.Where(x => x.listID == model.listID).Select(y => y.categoryID);
+                        model.categories = new List<CategorySelect>();
+                        foreach (Category cat in db.Categories)
+                        {
+                            var tempCat = new CategorySelect();
+                            tempCat.id = cat.categoryID;
+                            tempCat.categoryName = cat.categoryName;
+                            if (selectedCats.Contains(cat.categoryID))
+                            {
+                                tempCat.Selected = true;
+                            }
+                            else
+                            {
+                                tempCat.Selected = false;
+                            }
+                            model.categories.Add(tempCat);
+                        }
+                    }
+                }
+                else if (model.changed == "CompleteItem")
                 {
                     int completed = 0;
                     int.TryParse(button, out completed);
@@ -232,7 +287,13 @@ namespace CS3750P1.Controllers
                     db.Items.Where(x => x.itemID == completed).Single().dateCompleted = DateTime.Now;
                     model.items.Where(x => x.itemID == completed).Single().dateCompleted = DateTime.Now;
                 }
-
+                else if (model.changed == "DeleteCat")
+                {
+                    int delete = 0;
+                    int.TryParse(button, out delete);
+                    db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
+                    model.categories.Remove(model.categories.Where(x => x.id == delete).Single());
+                }
                 ModelState.Clear();
                 db.SaveChanges();
             }
@@ -291,8 +352,6 @@ namespace CS3750P1.Controllers
                     int.TryParse(button, out delete);
                     db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
                     model.categories.Remove(model.categories.Where(x => x.id == delete).Single());
-                    //db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
-                    //model.categories.Remove(model.categories.Where(x => x.id == delete).Single());
                 }
 
                 ModelState.Clear();

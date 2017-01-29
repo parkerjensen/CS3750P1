@@ -11,7 +11,6 @@ namespace CS3750P1.Models
         public string listName { get; set; }
         public List<Item> items { get; set; }
         public List<CategorySelect> categories { get; set; }
-        public int itemChanged { get; set; }
-        public int categoryChanged { get; set; }
+        public string changed { get; set; }
     }
 }
