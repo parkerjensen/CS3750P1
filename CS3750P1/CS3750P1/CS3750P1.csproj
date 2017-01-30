@@ -209,7 +209,8 @@
     <Compile Include="Item.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Models\CategorySelectionViewModel.cs" />
-    <Compile Include="Models\SelectCategoryEditorViewModel.cs" />
+    <Compile Include="Models\EditListModel.cs" />
+    <Compile Include="Models\CategorySelect.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -284,10 +285,10 @@
     <Content Include="Views\Home\BradyPage.cshtml" />
     <Content Include="Views\Home\ViewLists.cshtml" />
     <Content Include="Views\Home\ListItems.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Home\EditorTemplates\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
