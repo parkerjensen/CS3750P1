@@ -208,7 +208,7 @@ namespace CS3750P1.Controllers
         }
         
         [HttpPost]
-        public ActionResult EditItems(EditListModel model, string button, string newCat = "")
+        public ActionResult EditItems(EditListModel model, string button, string newCat = "", string newItem = "")
         {
             ViewBag.CatMessage = "";
             using(ToDoContext db = new ToDoContext())
@@ -278,6 +278,14 @@ namespace CS3750P1.Controllers
                         }
                     }
                 }
+                else if(button == "NewItem")
+                {
+                    Item tempItem = new Item();
+                    tempItem.itemName = newItem;
+                    tempItem.listID = model.listID;
+                    db.Items.Add(tempItem);
+                    model.items.Add(tempItem);
+                }
                 else if (model.changed == "CompleteItem")
                 {
                     int completed = 0;
@@ -300,7 +308,7 @@ namespace CS3750P1.Controllers
             return View("ListItems", model);
         }
 
-        public ActionResult UpdateCategories(EditListModel model, string button, string newCat = "")
+        /*public ActionResult UpdateCategories(EditListModel model, string button, string newCat = "", string newItem = "")
         {
             ViewBag.CatMessage = "";
             using (ToDoContext db = new ToDoContext())
@@ -359,7 +367,7 @@ namespace CS3750P1.Controllers
             }
             return View("ListItems", model);
         }
-
+        */
         [HttpPost]
         public ActionResult ListByCategory(string catSubmit)
         {

@@ -66,6 +66,7 @@
                 </tr>
                 @Html.HiddenFor(m => m.listName)
                 @Html.HiddenFor(m => m.listID)
+                @Html.HiddenFor(m => m.changed)
                 @for (int i = 0; i < Model.items.Count; i++)
                 {
                     <tr>
@@ -85,11 +86,23 @@
                             <td>Not Done</td>
                         }
                         <td>
-                            <button type="submit" id="Complete" name="button" value=@Model.items[i].itemID onclick="@Model.changed = CompleteItem">Complete</button>
+                            <button type="submit" id="Complete" name="button" value=@Model.items[i].itemID onclick="CompleteItem();">Complete</button>
                         </td>
                     </tr>
                 }
+                
                 </table>
+                <button type="button" id="newItemBtn">New Todo</button>
+                <div id="itemModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <input name="newItem" type="text" placeholder="New Item Text">
+                        <button type="submit" id="Create" name="button" value="NewItem">Submit</button>
+                    </div>
+
+                </div>
 
                     <table class="catTable">
                         <tr>
@@ -113,78 +126,27 @@
                                     @Html.DisplayFor(m => m.categories[i].categoryName)
                                 </td>
                                 <td>
-                                    <button type="submit" id="Delete" name="button" value=Cat@Model.categories[i].id onclick="@Model.changed = DeleteCat">Delete</button>
+                                    <button type="submit" id="Delete" name="button" value=@Model.categories[i].id onclick="DeleteCat();">Delete</button>
                                 </td>
                              </tr>
                         }
 
                     </table>
-                <button type="submit" id="Update" name="button" value="Update">Save Changes</button>
-            }
-@*
-    @if (Model.items != null)
-    {
-        <h2 align="center">- Categories -</h2>
-
-
-            using (Html.BeginForm("UpdateCategories", "Home"))
-            {
-                <table class="table">
-                    <tr>
-                        <th>
-                            Selected
-                        </th>
-                        <th>
-                            Category
-                        </th>
-                        <th></th>
-                    </tr>
-                    @Html.HiddenFor(m => m.listName)
-                    @Html.HiddenFor(m => m.listID)
-                    @for (int i = 0; i < Model.categories.Count; i++)
-                    {
-                    <tr>
-                        <td>
-                            @Html.HiddenFor(m => m.categories[i].categoryName)
-                            @Html.HiddenFor(m => m.categories[i].id)
-                            @Html.HiddenFor(m => m.categories[i].Selected)
-                            @Html.CheckBoxFor(m => m.categories[i].Selected)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(m => m.categories[i].categoryName)
-                        </td>
-                        <td>
-                            <button type="submit" id="Delete" name="button" value=@Model.categories[i].id>Delete</button>
-                        </td>
-                    </tr>
-                    }
-                    @for (int i = 0; i < Model.items.Count; i++)
-                    {
-                    @Html.HiddenFor(m => m.items[i].itemID)
-                    @Html.HiddenFor(m => m.items[i].itemName)
-                    @Html.HiddenFor(m => m.items[i].listID)
-                    @Html.HiddenFor(m => m.items[i].isCompleted)
-                    }
-                </table>
-                <!-- Trigger/Open The Modal -->
-                <button type="button" id="myBtn">Create Category</button>
+                    <button type="button" id="newCatBtn">Create Category</button>
 
                 <!-- The Modal -->
-                <div id="myModal" class="modal">
+                    <div id="myModal" class="modal">
 
-                    <!-- Modal content -->
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <input name="newCat" type="text" placeholder="New Category Name">
-                        <button type="submit" id="Create" name="button" value="NewCat">Create</button>
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <input name="newCat" type="text" placeholder="New Category Name">
+                            <button type="submit" id="Create" name="button" value="NewCat">Create New Category</button>
+                        </div>
+
                     </div>
-
-                </div>
-
+                <button type="submit" id="Update" name="button" value="Update">Save Changes</button>
             }
-
-    }*@
-        
 </div>
 
 <script>
@@ -192,7 +154,7 @@
 var modal = document.getElementById('myModal');
 
 // Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+var btn = document.getElementById("newCatBtn");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
@@ -212,6 +174,40 @@ window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
+}
+
+// Get the modal
+var modal2 = document.getElementById('itemModal');
+
+// Get the button that opens the modal
+var btn2 = document.getElementById("newItemBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn2.onclick = function () {
+    modal2.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function () {
+    modal2.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == modal2) {
+        modal2.style.display = "none";
+    }
+}
+
+function CompleteItem(){
+    document.getElementById("changed").value = "CompleteItem";
+}
+
+function DeleteCat() {
+    document.getElementById("changed").value = "DeleteCat";
 }
 
 </script>
