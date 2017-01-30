@@ -58,7 +58,7 @@
                     </td>
                     <td>
                         @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID }, null) |
-                        @Html.ActionLink("Delete", "DeleteList", "Home", new { id = @l.listID }, new { onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
+                        @Html.ActionLink(linkText: "Delete", actionName: "DeleteList", controllerName: "Home", routeValues: new { id = @l.listID, cat = @ViewBag.Category }, htmlAttributes: new { onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
                     </td>
                 </tr>
             }
@@ -68,13 +68,16 @@
 
 @functions
 {
-    public int CountItems(int id) //NOT DONE YET BECAUSE THERES NO LINK BETWEEN ITEMS AND LISTS IN DB MODEL
+    public int CountItems(int id)
     {
         ToDoContext db = new ToDoContext();
         int count = 0;
         foreach(Item i in db.Items)
         {
-            count++;
+            if (i.listID == id)
+            {
+                count++;
+            }
         }
         return count;
     }
