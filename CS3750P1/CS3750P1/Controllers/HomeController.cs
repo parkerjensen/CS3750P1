@@ -112,47 +112,7 @@ namespace CS3750P1.Controllers
             return View();
         }
 
-        public ActionResult BradyPage()
-        {
-            ViewBag.Message = "Hello Brady";
-
-            ViewBag.Message = "I'm glad you learned how to make your own page";
-
-            using (var ctx = new ToDoContext())
-            {
-
-
-                //ViewBag.firstCategoryItem = ctx.Categories.LastOrDefault().categoryID;
-
-                ctx.SaveChanges();
-            }
-
-            //using (var ctx = new ToDoContext())
-            //{
-            //    List test = new List() { listName = "Test List" };
-
-            //    ctx.Lists.Add(test);
-            //    ctx.SaveChanges();
-            //}
-            ViewBag.MyMessageToUsers = "Hello from me.";
-            ViewBag.CategoryText = "Your New Category Goes Here.";
-            ViewBag.CheckTheBox = true;
-            return View();
-        }
-
-        public ActionResult Test()
-        {
-            using (var ctx = new ToDoContext())
-            {
-                List test = new List() { listName = "Test List"};
-
-                ctx.Lists.Add(test);
-                ctx.SaveChanges();
-            }
-            ViewBag.Message = "This is a test page.";
-            
-            return View();
-        }
+      
 
         public ActionResult ViewLists()
         {
@@ -186,6 +146,10 @@ namespace CS3750P1.Controllers
                 model.listID = listID;
                 //create list of items based on listID
                 model.items = db.Items.Where(x => x.listID == listID).ToList();
+                if(model.items == null)
+                {
+                    model.items = new List<Item>();
+                }
                 var selectedCats = db.CategoryLists.Where(x => x.listID == listID).Select(y => y.categoryID);
                 model.categories = new List<CategorySelect>();
                 foreach (Category cat in db.Categories)
@@ -280,6 +244,10 @@ namespace CS3750P1.Controllers
                 }
                 else if(button == "NewItem")
                 {
+                    if(model.items == null)
+                    {
+                        model.items = new List<Item>();
+                    }
                     Item tempItem = new Item();
                     tempItem.itemName = newItem;
                     tempItem.listID = model.listID;
@@ -306,6 +274,31 @@ namespace CS3750P1.Controllers
                 db.SaveChanges();
             }
             return View("ListItems", model);
+        }
+
+        public ActionResult AddList(string button, string newList = "")
+        {
+            //System.Diagnostics.Debug.WriteLine("Not In New List");
+            //System.Diagnostics.Debug.WriteLine("button value: " + button);
+            //System.Diagnostics.Debug.WriteLine("newList value: " + newList);
+            using (ToDoContext db = new ToDoContext())
+            {
+
+                if (button == "NewList")
+                {
+                    //System.Diagnostics.Debug.WriteLine("In New List");
+                    List myList = new List();
+                    myList.listName = newList;
+                    myList.isCompleted = false;
+                    myList.dateCompleted = DateTime.Now;
+                    db.Lists.Add(myList);
+                    db.SaveChanges();
+                    return RedirectToAction("ViewEditList", new { id = myList.listID });
+                }
+
+
+            }
+            return View();
         }
 
         /*public ActionResult UpdateCategories(EditListModel model, string button, string newCat = "", string newItem = "")
