@@ -212,7 +212,10 @@ namespace CS3750P1.Controllers
                 }
                 else if (button == "NewCat")
                 {
-
+                    if (newCat == "")
+                    {
+                        return View("ListItems", model);
+                    }
                     if (db.Categories.Where(x => x.categoryName == newCat).Count() > 0)
                     {
                         ViewBag.CatMessage = "That category already exists.";
@@ -244,6 +247,10 @@ namespace CS3750P1.Controllers
                 }
                 else if(button == "NewItem")
                 {
+                    if (newItem == "")
+                    {
+                        return View("ListItems", model);
+                    }
                     if(model.items == null)
                     {
                         model.items = new List<Item>();
@@ -267,6 +274,15 @@ namespace CS3750P1.Controllers
                 {
                     int delete = 0;
                     int.TryParse(button, out delete);
+                    List<CategoryList> cllist = db.CategoryLists.Where(x => x.categoryID == delete).ToList();
+                    foreach (CategoryList cl in cllist)
+                    {
+                        // db.Categories.Remove(db.CategoryLists.Where(x => x.categoryID == delete)
+                        // db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
+                        db.CategoryLists.Remove(cl);
+                       
+                    }
+                    db.SaveChanges();
                     db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
                     model.categories.Remove(model.categories.Where(x => x.id == delete).Single());
                 }
@@ -286,6 +302,10 @@ namespace CS3750P1.Controllers
 
                 if (button == "NewList")
                 {
+                    if (newList == "")
+                    {
+                        return RedirectToAction("Index");
+                    }
                     //System.Diagnostics.Debug.WriteLine("In New List");
                     List myList = new List();
                     myList.listName = newList;
