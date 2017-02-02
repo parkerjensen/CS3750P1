@@ -52,11 +52,58 @@
         <h2 align="center">- @Model.listName -</h2>
 
     <div align ="center">
-        @Html.ActionLink(linkText: "Delete This List", actionName: "DeleteListFromListView", controllerName: "Home", routeValues: new { listId = @Model.listID }, htmlAttributes: new { @class = "btn btn-info btn-sm", onclick = "return confirm('You are about to delete list \"" + Model.listName + "\". Click \"OK\" to confirm.');" })
+        @Html.ActionLink(linkText: "Delete This List", actionName: "DeleteListFromListView", controllerName: "Home", routeValues: new { listId = @Model.listID }, htmlAttributes: new { @class = "btn btn-danger btn-sm", onclick = "return confirm('You are about to delete list \"" + Model.listName + "\". Click \"OK\" to confirm.');" })
     </div>
 
-        @using (Html.BeginForm("EditItems", "Home"))
-        {
+@using (Html.BeginForm("EditItems", "Home"))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Categories</h2>
+            <table class="catTable">
+                <tr>
+                    <th>
+                        Selected
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th></th>
+                </tr>
+                @for (int i = 0; i < Model.categories.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Html.HiddenFor(m => m.categories[i].categoryName)
+                            @Html.HiddenFor(m => m.categories[i].id)
+                            @Html.CheckBoxFor(m => m.categories[i].Selected)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m.categories[i].categoryName)
+                        </td>
+                        <td>
+                            <button type="submit" id="Delete" name="button" value=@Model.categories[i].id onclick="DeleteCat();">Delete</button>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            <button type="button" id="newCatBtn">Create Category</button>
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <input name="newCat" type="text" placeholder="New Category Name">
+                    <button type="submit" id="Create" name="button" value="NewCat">Create New Category</button>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h2>Items</h2>
             <table class="table">
                 <tr>
                     <th>
@@ -93,63 +140,28 @@
                         </td>
                     </tr>
                 }
-                
-                </table>
-                <button type="button" id="newItemBtn">New Todo</button>
-                <div id="itemModal" class="modal">
 
-                    <!-- Modal content -->
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <input name="newItem" type="text" placeholder="New Item Text">
-                        <button type="submit" id="Create" name="button" value="NewItem">Submit</button>
-                    </div>
+            </table>
+            <button type="button" id="newItemBtn">New Todo</button>
+            <div id="itemModal" class="modal">
 
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <input name="newItem" type="text" placeholder="New Item Text">
+                    <button type="submit" id="Create" name="button" value="NewItem">Submit</button>
                 </div>
 
-                    <table class="catTable">
-                        <tr>
-                            <th>
-                                Selected
-                            </th>
-                            <th>
-                                Category
-                            </th>
-                            <th></th>
-                        </tr>
-                        @for (int i = 0; i < Model.categories.Count; i++)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.HiddenFor(m => m.categories[i].categoryName)
-                                    @Html.HiddenFor(m => m.categories[i].id)
-                                    @Html.CheckBoxFor(m => m.categories[i].Selected)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(m => m.categories[i].categoryName)
-                                </td>
-                                <td>
-                                    <button type="submit" id="Delete" name="button" value=@Model.categories[i].id onclick="DeleteCat();">Delete</button>
-                                </td>
-                             </tr>
-                        }
+            </div>
 
-                    </table>
-                    <button type="button" id="newCatBtn">Create Category</button>
+        </div>
+    </div>
+    <br /><br />
+    <button type="submit" id="Update" name="button" value="Update" align ="center" class="btn btn-success btn-block">Save Changes</button>
+}
 
-                <!-- The Modal -->
-                    <div id="myModal" class="modal">
-
-                        <!-- Modal content -->
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <input name="newCat" type="text" placeholder="New Category Name">
-                            <button type="submit" id="Create" name="button" value="NewCat">Create New Category</button>
-                        </div>
-
-                    </div>
-                <button type="submit" id="Update" name="button" value="Update">Save Changes</button>
-        }
+                    
+                    
 </div>
 
 <script>
