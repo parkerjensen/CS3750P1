@@ -179,6 +179,7 @@ namespace CS3750P1.Controllers
             {
                 if (button == "Update")
                 {
+                    db.Lists.Where(x => x.listID == model.listID).Single().listName = model.listName;
                     for (var i = 0; i < model.items.Count(); i++)
                     {
                         db.Entry(model.items[i]).State = System.Data.Entity.EntityState.Modified;
@@ -270,6 +271,15 @@ namespace CS3750P1.Controllers
                     db.Items.Where(x => x.itemID == completed).Single().dateCompleted = DateTime.Now;
                     model.items.Where(x => x.itemID == completed).Single().dateCompleted = DateTime.Now;
                 }
+                else if (model.changed == "IncompleteItem")
+                {
+                    int completed = 0;
+                    int.TryParse(button, out completed);
+                    db.Items.Where(x => x.itemID == completed).Single().isCompleted = false;
+                    model.items.Where(x => x.itemID == completed).Single().isCompleted = false;
+                    db.Items.Where(x => x.itemID == completed).Single().dateCompleted = null;
+                    model.items.Where(x => x.itemID == completed).Single().dateCompleted = null;
+                }
                 else if (model.changed == "DeleteCat")
                 {
                     int delete = 0;
@@ -277,14 +287,19 @@ namespace CS3750P1.Controllers
                     List<CategoryList> cllist = db.CategoryLists.Where(x => x.categoryID == delete).ToList();
                     foreach (CategoryList cl in cllist)
                     {
-                        // db.Categories.Remove(db.CategoryLists.Where(x => x.categoryID == delete)
-                        // db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
                         db.CategoryLists.Remove(cl);
                        
                     }
                     db.SaveChanges();
                     db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
                     model.categories.Remove(model.categories.Where(x => x.id == delete).Single());
+                }
+                else if (model.changed == "DeleteItem")
+                {
+                    int delete = 0;
+                    int.TryParse(button, out delete);
+                    db.Items.Remove(db.Items.Where(x => x.itemID == delete).Single());
+                    model.items.Remove(model.items.Where(x => x.itemID == delete).Single());
                 }
                 ModelState.Clear();
                 db.SaveChanges();
@@ -321,66 +336,7 @@ namespace CS3750P1.Controllers
             return View();
         }
 
-        /*public ActionResult UpdateCategories(EditListModel model, string button, string newCat = "", string newItem = "")
-        {
-            ViewBag.CatMessage = "";
-            using (ToDoContext db = new ToDoContext())
-            {
-                if (button == "Update")
-                {
-                    for (var i = 0; i < model.items.Count(); i++)
-                    {
-                        db.Entry(model.items[i]).State = System.Data.Entity.EntityState.Modified;
-
-                    }
-
-                }
-                if (button == "NewCat")
-                {
-
-                    if(db.Categories.Where(x => x.categoryName == newCat).Count() > 0)
-                    {
-                        ViewBag.CatMessage = "That category already exists.";
-                    }
-                    else
-                    {
-                        Category Cat = new Category();
-                        Cat.categoryName = newCat;
-                        db.Categories.Add(Cat);
-                        db.SaveChanges();
-                        var selectedCats = db.CategoryLists.Where(x => x.listID == model.listID).Select(y => y.categoryID);
-                        model.categories = new List<CategorySelect>();
-                        foreach (Category cat in db.Categories)
-                        {
-                            var tempCat = new CategorySelect();
-                            tempCat.id = cat.categoryID;
-                            tempCat.categoryName = cat.categoryName;
-                            if (selectedCats.Contains(cat.categoryID))
-                            {
-                                tempCat.Selected = true;
-                            }
-                            else
-                            {
-                                tempCat.Selected = false;
-                            }
-                            model.categories.Add(tempCat);
-                        }
-                    }
-                }
-                else
-                {
-                    int delete = 0;
-                    int.TryParse(button, out delete);
-                    db.Categories.Remove(db.Categories.Where(x => x.categoryID == delete).Single());
-                    model.categories.Remove(model.categories.Where(x => x.id == delete).Single());
-                }
-
-                ModelState.Clear();
-                db.SaveChanges();
-            }
-            return View("ListItems", model);
-        }
-        */
+        
         [HttpPost]
         public ActionResult ListByCategory(string catSubmit)
         {
