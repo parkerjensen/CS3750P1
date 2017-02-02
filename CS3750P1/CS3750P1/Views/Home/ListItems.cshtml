@@ -51,6 +51,9 @@
 <div class="container">
         <h2 align="center">- @Model.listName -</h2>
 
+    <div align ="center">
+        @Html.ActionLink(linkText: "Delete This List", actionName: "DeleteListFromListView", controllerName: "Home", routeValues: new { listId = @Model.listID }, htmlAttributes: new { @class = "btn btn-info btn-sm", onclick = "return confirm('You are about to delete list \"" + Model.listName + "\". Click \"OK\" to confirm.');" })
+    </div>
 
         @using (Html.BeginForm("EditItems", "Home"))
         {
@@ -146,7 +149,7 @@
 
                     </div>
                 <button type="submit" id="Update" name="button" value="Update">Save Changes</button>
-            }
+        }
 </div>
 
 <script>

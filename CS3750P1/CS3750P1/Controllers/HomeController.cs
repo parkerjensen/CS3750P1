@@ -459,8 +459,62 @@ namespace CS3750P1.Controllers
                 ViewBag.List = new List<List>(db.Lists);
                 ViewBag.Category = cat;
                 return View("ViewLists");
+            }         
+        }
+
+        public ActionResult DeleteListFromListView(int listId)
+        {
+            ToDoContext db = new ToDoContext();
+            List dList = new List();
+            //find id
+            foreach (List l in db.Lists)
+            {
+                if (listId == l.listID)
+                {
+                    dList = l;
+                    break;
+                }
             }
-            
+            try
+            {
+                //remove in category list table
+                foreach (CategoryList cl in db.CategoryLists)
+                {
+                    if (cl.listID == dList.listID)
+                    {
+                        db.CategoryLists.Remove(cl);
+                    }
+                }
+                db.SaveChanges();
+
+                //remove items referencing list
+                foreach (Item i in db.Items)
+                {
+                    if (i.listID == dList.listID)
+                    {
+                        db.Items.Remove(i);
+                    }
+                }
+                db.SaveChanges();
+
+                //remove from list table  
+                foreach (List l in db.Lists)
+                {
+                    if (l.listID == dList.listID)
+                    {
+                        db.Lists.Remove(dList);
+                        break;
+                    }
+                }
+                db.SaveChanges();
+
+                return View("Index");
+            }
+            catch (Exception)
+            {
+                return View("Index");
+            }
+
         }
     }
 }
