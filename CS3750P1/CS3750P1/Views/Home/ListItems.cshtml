@@ -98,7 +98,7 @@
 
 @using (Html.BeginForm("EditItems", "Home"))
 {
-    <h2 align="center">@Html.EditorFor(m => m.listName)</h2>
+    <h2 align="center">@Html.EditorFor(m => m.listName, new { onkeypress = "return event.keyCode != 13;" })</h2>
 
     <div align="center">
         @Html.ActionLink(linkText: "Delete This List", actionName: "DeleteListFromListView", controllerName: "Home", routeValues: new { listId = @Model.listID }, htmlAttributes: new { @class = "btn btn-danger btn-sm", onclick = "return confirm('You are about to delete list \"" + Model.listName + "\". Click \"OK\" to confirm.');" })
@@ -128,7 +128,7 @@
                             @Html.DisplayFor(m => m.categories[i].categoryName)
                         </td>
                         <td>
-                            <button type="submit" id="Delete" name="button" class="btn btn-danger btn-block" value=@Model.categories[i].id onkeydown="event.preventDefault();" onclick ="DeleteCat();">Delete</button>
+                            <button type="submit" id="Delete" name="button" class="btn btn-danger btn-block" value=@Model.categories[i].id onclick ="DeleteCat(); if (window.event.keyCode == 13) {event.returnValue = false; event.cancel = true;}">Delete</button>
                         </td>
                     </tr>
                 }
@@ -142,8 +142,8 @@
                 <!-- Modal content -->
                 <div class="modal-contentCat">
                     <span class="closeCat">&times;</span>
-                    <input name="newCat" type="text" placeholder="New Category Name">
-                    <button type="submit" id="Create" name="button" class="btn btn-info btn-block" value="NewCat"  onkeydown="event.preventDefault();">Create New Category</button>
+                    <input id="myNewCat" name="newCat" type="text" placeholder="New Category Name" onkeypress="return event.keyCode != 13;">
+                    <button type="submit" id="CreateCat" name="button" class="btn btn-info btn-block" value="NewCat"  onkeydown="event.preventDefault();">Create New Category</button>
                 </div>
 
             </div>
@@ -171,7 +171,7 @@
                             @Html.HiddenFor(m => m.items[i].dateCompleted)
                             @Html.HiddenFor(m => m.items[i].listID)
                             @Html.HiddenFor(m => m.items[i].isCompleted)
-                            @Html.EditorFor(m => m.items[i].itemName)
+                            @Html.EditorFor(m => m.items[i].itemName, new { onkeypress = "return event.keyCode != 13;" })
                         </td>
                         @if (@Model.items[i].isCompleted == true)
                         {
@@ -194,8 +194,8 @@
                 <!-- Modal content -->
                 <div class="modal-contentItem">
                     <span class="closeItem">&times;</span>
-                    <input name="newItem" type="text" placeholder="New Item Text">
-                    <button type="submit" id="Create" name="button" class="btn btn-info btn-block" value="NewItem" onkeydown="event.preventDefault();">Submit</button>
+                    <input id="myNewItem" name="newItem" type="text" placeholder="New Item Text" onkeypress = "return event.keyCode != 13;">
+                    <button type="submit" id="CreateItem" name="button" class="btn btn-info btn-block" value="NewItem" onkeydown="event.preventDefault();">Submit</button>
 
                 </div>
 
@@ -220,6 +220,23 @@ var btn = document.getElementById("newCatBtn");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("closeCat")[0];
+
+
+document.getElementById("myNewItem")
+    .addEventListener("keyup", function (event) {
+        event.preventDefault();
+        if (event.keyCode == 13) {
+            document.getElementById("CreateItem").click();
+        }
+    });
+
+document.getElementById("myNewCat")
+    .addEventListener("keyup", function (event) {
+        event.preventDefault();
+        if (event.keyCode == 13) {
+            document.getElementById("CreateCat").click();
+        }
+    });
 
 // When the user clicks the button, open the modal
 btn.onclick = function() {
