@@ -3,31 +3,103 @@
 }
 
 <div class="jumbotron">
-    <h1>ListGod.com</h1>
-    <p class="lead">Welcome to List God! We are a free online to do list manager. For instructions, look below.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Create New List &raquo;</a></p>
+    <h1>To-Do List Manager</h1>
+    <p class="lead">Manage your to-do lists for every possible need</p>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Instructions 1</h2>
+        <h2>Category</h2>
         <p>
-            blah blah blah
+            Click <b>Create List </b> and select or create a new category to add and organize your to-do lists
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <div>
+            <ul>
+                <li><button type="button" id="myBtnList" class="btn btn-info btn-sm" style="margin-top: 10px">Create List +</button></li>
+            </ul>
+            @*  @Html.Partial("_LoginPartial")*@
+            @*@Html.Partial("CategoryIndex");*@
+        </div>
     </div>
     <div class="col-md-4">
-        <h2>Instructions 2</h2>
+        <h2>To-do list</h2>
         <p>
-            blah blah blah
+            Click <b>Create List</b> to create to-do a list.<br />
+            Click <b>Lists</b> at the top of the page to view or edit your current to-do lists.
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <div>
+            <ul>
+                <li><button type="button" id="myBtnList" class="btn btn-info btn-sm">Create List +</button></li>
+            </ul>
+            @*  @Html.Partial("_LoginPartial")*@
+            @*@Html.Partial("CategoryIndex");*@
+        </div>
     </div>
     <div class="col-md-4">
-        <h2>Instructions 3</h2>
+        <h2>Edit To-Do Lists</h2>
         <p>
-            blah blah blah
+            Click <b>complete</b> to mark an item complete.<br />
+            Click <b>add</b> to add an item to the to-do list.<br />
+            Click <b>delete</b> to delete an item from the list.<br />
+            Click <b>edit</b> to update an item from the list.<br />
+            Click <b>add list</b> to add a to-do list.<br />
+            Click <b>delete list</b> to delete a to-do list.<br />
+            Click <b>edit list</b> to edit a to-do list.
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+
+<div class="container body-content">
+    @RenderBody()
+    <hr />
+    <footer>
+        <p>&copy; @DateTime.Now.Year - List God Group</p>
+    </footer>
+</div>
+
+
+@using (Html.BeginForm("AddList", "Home", FormMethod.Post))
+{
+        <!-- The Modal -->
+    <div id="myModalList" class="modalList">
+
+        <!-- Modal content -->
+        <div class="modal-contentList" method="POST">
+            <span class="closeList">&times;</span>
+            <input name="newList" type="text" placeholder="New List Name">
+            <button type="submit" id="Create" name="button" value="NewList">Create</button>
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
+
+<script>
+// Get the modal
+var modalList = document.getElementById('myModalList');
+
+// Get the button that opens the modal
+var btnList = document.getElementById("myBtnList");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("closeList")[0];
+
+// When the user clicks the button, open the modal
+btnList.onclick = function() {
+    modalList.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modalList.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modalList) {
+        modalList.style.display = "none";
+    }
+}
+</script>
