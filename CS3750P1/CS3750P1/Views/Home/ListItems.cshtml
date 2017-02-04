@@ -25,11 +25,11 @@
 
         /* Modal Content */
         .modal-contentCat {
-            background-color: #fefefe;
+            background-color: rgb(1,236,177);
             margin: auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+            border: 10px solid #888;
+            width: 50%;
         }
 
         /* The Close Button */
@@ -69,11 +69,11 @@
 
         /* Modal Content */
         .modal-contentItem {
-            background-color: #fefefe;
+            background-color: rgb(1,236,177);
             margin: auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+            border: 10px solid #888;
+            width: 50%;
         }
 
         /* The Close Button */
@@ -101,14 +101,16 @@
     @Html.AntiForgeryToken()
     <div class="jumbotron">
         <div class='btn-group'>
-            <h2>Edit List: @Html.EditorFor(m => m.listName, new { onkeypress = "return event.keyCode != 13;" })</h2>
-            @Html.ActionLink(linkText: "Delete This List", actionName: "DeleteListFromListView", controllerName: "Home", routeValues: new { listId = @Model.listID }, htmlAttributes: new { style = "margin-left:20em", @class = "btn btn-danger btn-xs", onclick = "return confirm('You are about to delete list \"" + Model.listName + "\". Click \"OK\" to confirm.');" })
+            <h1 style="color: rgb(245,195,0)">Edit List:</h1>
+            <h2>@Html.EditorFor(m => m.listName, new { htmlAttributes = new { @class = "form-control input-lg" }, onkeypress = "return event.keyCode != 13;" })</h2>
+            @Html.ActionLink(linkText: "Delete This List", actionName: "DeleteListFromListView", controllerName: "Home", routeValues: new { listId = @Model.listID }, htmlAttributes: new { style = "margin-left:15em", @class = "btn btn-danger btn-xs", onclick = "return confirm('You are about to delete list \"" + Model.listName + "\". Click \"OK\" to confirm.');" })
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-4">
-            <h2 align ="center">- Categories -</h2>
+            <h2 align ="center" class="text-muted">- Categories -</h2>
+            <div align="center"><button align="center" type="button" id="newCatBtn" class="btn btn-success btn-xs">Create Category</button></div>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -139,7 +141,6 @@
                 }
 
             </table>
-            <button type="button" id="newCatBtn" class="btn btn-info btn-block">Create Category</button>
 
             <!-- The Modal -->
             <div id="myModal" class="modalCat">
@@ -147,14 +148,18 @@
                 <!-- Modal content -->
                 <div class="modal-contentCat">
                     <span class="closeCat">&times;</span>
-                    <input id="myNewCat" name="newCat" type="text" placeholder="New Category Name" onkeypress="return event.keyCode != 13;">
-                    <button type="submit" id="CreateCat" name="button" class="btn btn-info btn-block" value="NewCat"  onkeydown="event.preventDefault();">Create New Category</button>
+                    <div align="center">
+                        <input class="form-control input-lg" id="myNewCat" name="newCat" type="text" placeholder="New Category Name" onkeypress="return event.keyCode != 13;">
+                        <button align="center" type="submit" id="CreateCat" name="button" class="btn btn-warning btn-block" value="NewCat" onkeydown="event.preventDefault();">Create New Category</button>
+                    </div>
+                   
                 </div>
 
             </div>
         </div>
         <div class="col-md-8">
-            <h2 align ="center">- Items -</h2>
+            <h2 align ="center" class="text-muted">- Items -</h2>
+            <div align="center"><button type="button" id="newItemBtn" class="btn btn-success btn-xs">New Task</button></div>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -178,32 +183,33 @@
                             @Html.HiddenFor(m => m.items[i].dateCompleted)
                             @Html.HiddenFor(m => m.items[i].listID)
                             @Html.HiddenFor(m => m.items[i].isCompleted)
-                            @Html.EditorFor(m => m.items[i].itemName, new { onkeypress = "return event.keyCode != 13;", onkeydown = "event.preventDefault();" })
+                            @Html.EditorFor(m => m.items[i].itemName, new { htmlAttributes = new { @class = "form-control" }, onkeypress = "return event.keyCode != 13;", onkeydown = "event.preventDefault();" })
                         </td>
                         @if (@Model.items[i].isCompleted == true)
                         {
-                            <td>Done</td>
-                            <td><button type="submit" id="Inomplete" name="button" class="btn btn-warning btn-block" value=@Model.items[i].itemID onclick="IncompleteItem();">Set as Incomplete</button></td>
+                            <td class="text-success">Completed</td>
+                            <td><button type="submit" id="Inomplete" name="button" class="btn btn-warning btn-xs btn-block" value=@Model.items[i].itemID onclick="IncompleteItem();">Set as Uncomplete</button></td>
                         }
                         else
                         {
-                            <td>Not Done</td>
-                            <td><button type="submit" id="Complete" name="button" class="btn btn-success btn-block" value=@Model.items[i].itemID onclick="CompleteItem();">Complete</button></td>
+                            <td class="text-warning">Uncompleted</td>
+                            <td><button type="submit" id="Complete" name="button" class="btn btn-success btn-xs btn-block" value=@Model.items[i].itemID onclick="CompleteItem();">Complete</button></td>
                         }
-                        <td><button type="submit" id="Delete" name="button" class="btn btn-danger btn-block" value=@Model.items[i].itemID onkeydown="event.preventDefault();" onclick="DeleteItem();">Delete</button></td>
+                        <td><button type="submit" id="Delete" name="button" class="btn btn-danger btn-xs btn-block" value=@Model.items[i].itemID onkeydown="event.preventDefault();" onclick="DeleteItem();">Delete</button></td>
                     </tr>
                 }
 
             </table>
-            <button type="button" id="newItemBtn" class="btn btn-info btn-block">New Task</button>
+
             <div id="itemModal" class="modalItem">
 
                 <!-- Modal content -->
                 <div class="modal-contentItem">
                     <span class="closeItem">&times;</span>
-                    <input id="myNewItem" name="newItem" type="text" placeholder="New Item Text" onkeypress = "return event.keyCode != 13;">
-                    <button type="submit" id="CreateItem" name="button" class="btn btn-info btn-block" value="NewItem" onkeydown="event.preventDefault();">Submit</button>
-
+                    <div align="center">
+                        <input class="form-control input-lg" id="myNewItem" name="newItem" type="text" placeholder="New Task Name" onkeypress="return event.keyCode != 13;">
+                        <button align="center" type="submit" id="CreateItem" name="button" class="btn btn-warning btn-block" value="NewItem" onkeydown="event.preventDefault();">Submit</button>
+                    </div>                  
                 </div>
 
             </div>

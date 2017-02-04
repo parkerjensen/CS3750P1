@@ -25,11 +25,11 @@
 
         /* Modal Content */
         .modal-contentList {
-            background-color: #fefefe;
+            background-color: rgb(1,236,177);
             margin: auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+            border: 10px solid #888;
+            width: 50%;
         }
 
         /* The Close Button */
@@ -58,7 +58,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("List God", "Index", "Home", new { area = "" }, new { @class = "navbar-brand background-image:url('.././ListGodLogo.jpg')" })
+                <img src="~/ListGodLogo.jpg" class="img-rounded" alt="List God Logo" width="50" height="50" style="margin-top: 2px">
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -88,8 +88,11 @@
             <!-- Modal content -->
             <div class="modal-contentList" method="POST">
                 <span class="closeList">&times;</span>
-                <input name="newList" type="text" placeholder="New List Name">
-                <button type="submit" id="Create" name="button" value="NewList">Create</button>
+                <div align="center">
+                    <input class="form-control input-lg" name="newList" type="text" placeholder="New List Name">
+                    <button class="btn btn-warning btn-block" type="submit" id="Create" name="button" value="NewList">Create</button>
+                </div>
+                
             </div>
         </div>
     }

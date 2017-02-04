@@ -5,7 +5,7 @@
 }
 
 <div class="jumbotron">
-    <h1>@ViewBag.Title.</h1>
+    <h1 style="color: rgb(245,195,0)">@ViewBag.Title.</h1>
     <p>Select a category to filter lists from the drop down box below</p>
     @using (Html.BeginForm("ListByCategory", "Home", FormMethod.Post))
     {
@@ -29,13 +29,13 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th class="text-primary">
+                    <th>
                         List Name
                     </th>
-                    <th class="text-primary">
+                    <th>
                         Status
                     </th>
-                    <th class="text-primary">
+                    <th>
                         Item Count
                     </th>
                     <th></th>
@@ -60,8 +60,10 @@
                         @CountItems(l.listID)
                     </td>
                     <td>
-                        @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID }, new { @class = "btn btn-info btn-sm"}) |
+                        <div class="btn-group">
+                        @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID }, new { @class = "btn btn-info btn-sm"})
                         @Html.ActionLink(linkText: "Delete", actionName: "DeleteList", controllerName: "Home", routeValues: new { id = @l.listID, cat = @ViewBag.Category }, htmlAttributes: new { @class = "btn btn-danger btn-sm", onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
+                        </div>                          
                     </td>
                 </tr>
             }
