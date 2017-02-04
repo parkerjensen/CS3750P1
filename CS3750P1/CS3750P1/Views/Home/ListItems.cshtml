@@ -300,10 +300,18 @@
         if (confirm('Are you sure you want to delete this item? \n Click \"OK\" to confirm.')) {
             document.getElementById("changed").value = "DeleteItem";
         }
+        else
+        {
+            document.getElementById("changed").value = "";
+        }
     }
     function DeleteCat() {
         if (confirm('Are you sure you want to delete this category? \n Click \"OK\" to confirm.')) {
             document.getElementById("changed").value = "DeleteCat";
+        }
+        else
+        {
+            document.getElementById("changed").value = "";
         }
     }
 
