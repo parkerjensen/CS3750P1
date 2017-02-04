@@ -5,7 +5,7 @@
 }
 
 <div class="jumbotron">
-    <h2>@ViewBag.Title.</h2>
+    <h1>@ViewBag.Title.</h1>
     <p>Select a category to filter lists from the drop down box below</p>
     @using (Html.BeginForm("ListByCategory", "Home", FormMethod.Post))
     {
@@ -23,21 +23,23 @@
 <div class="container">
     @if (ViewBag.Category != null)
     {
-        <h2 align="center">- @ViewBag.Category -</h2>
+        <h2 align="center" class="text-muted">- @ViewBag.Category -</h2>
 
-        <table class="table">
-            <tr>
-                <th>
-                    List Name
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
-                    Item Count
-                </th>
-                <th></th>
-            </tr>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="text-primary">
+                        List Name
+                    </th>
+                    <th class="text-primary">
+                        Status
+                    </th>
+                    <th class="text-primary">
+                        Item Count
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
 
             @foreach (List l in ViewBag.List)
             {
@@ -47,18 +49,18 @@
                     </td>
                     @if (l.isCompleted != null && (bool)l.isCompleted)
                     {
-                        <td>Complete</td>
+                        <td class="text-success">Complete</td>
                     }
                     else
                     {
-                        <td>In progress</td>
+                        <td class="text-warning">In progress</td>
                     }
                     <td>
                         @CountItems(l.listID)
                     </td>
                     <td>
-                        @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID }, null) |
-                        @Html.ActionLink(linkText: "Delete", actionName: "DeleteList", controllerName: "Home", routeValues: new { id = @l.listID, cat = @ViewBag.Category }, htmlAttributes: new { onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
+                        @Html.ActionLink("View/Edit", "ViewEditList", "Home", new { id = @l.listID }, new { @class = "btn btn-info btn-sm"}) |
+                        @Html.ActionLink(linkText: "Delete", actionName: "DeleteList", controllerName: "Home", routeValues: new { id = @l.listID, cat = @ViewBag.Category }, htmlAttributes: new { @class = "btn btn-danger btn-sm", onclick = "return confirm('You are about to delete list \"" + l.listName + "\". Click \"OK\" to confirm.');" })
                     </td>
                 </tr>
             }

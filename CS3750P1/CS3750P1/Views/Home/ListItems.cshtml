@@ -3,7 +3,7 @@
 @model CS3750P1.Models.EditListModel
 
 @{
-    ViewBag.Title = "View Lists";
+    ViewBag.Title = "Edit List";
 }
 <head>
     <style>
@@ -98,24 +98,28 @@
 
 @using (Html.BeginForm("EditItems", "Home", FormMethod.Post, new { name = "frm", id = "frm" }))
 {
-    <h2 align="center">@Html.EditorFor(m => m.listName, new { onkeypress = "return event.keyCode != 13;" })</h2>
-
-    <div align="center">
-        @Html.ActionLink(linkText: "Delete This List", actionName: "DeleteListFromListView", controllerName: "Home", routeValues: new { listId = @Model.listID }, htmlAttributes: new { @class = "btn btn-danger btn-sm", onclick = "return confirm('You are about to delete list \"" + Model.listName + "\". Click \"OK\" to confirm.');" })
+    <div class="jumbotron">
+        <div class='btn-group'>
+            <h2>Edit List: @Html.EditorFor(m => m.listName, new { onkeypress = "return event.keyCode != 13;" })</h2>
+            @Html.ActionLink(linkText: "Delete This List", actionName: "DeleteListFromListView", controllerName: "Home", routeValues: new { listId = @Model.listID }, htmlAttributes: new { style = "margin-left:20em", @class = "btn btn-danger btn-xs", onclick = "return confirm('You are about to delete list \"" + Model.listName + "\". Click \"OK\" to confirm.');" })
+        </div>
     </div>
+
     <div class="row">
         <div class="col-md-4">
-            <h2>Categories</h2>
-            <table class="catTable">
-                <tr>
-                    <th>
-                        Selected
-                    </th>
-                    <th>
-                        Category
-                    </th>
-                    <th></th>
-                </tr>
+            <h2 align ="center">- Categories -</h2>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Selected
+                        </th>
+                        <th>
+                            Category
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
                 @for (int i = 0; i < Model.categories.Count; i++)
                 {
                     <tr>
@@ -128,7 +132,7 @@
                             @Html.DisplayFor(m => m.categories[i].categoryName)
                         </td>
                         <td>
-                            <button type="submit" id="Delete" name="button" class="btn btn-danger btn-block" value=@Model.categories[i].id onclick ="DeleteCat(); if (window.event.keyCode == 13) {event.returnValue = false; event.cancel = true;}">Delete</button>
+                            <button style ="margin-left: 90px" type="submit" id="Delete" name="button" class="btn btn-danger btn-xs" value=@Model.categories[i].id onclick ="DeleteCat(); if (window.event.keyCode == 13) {event.returnValue = false; event.cancel = true;}">Delete</button>
                         </td>
                     </tr>
                 }
@@ -149,18 +153,20 @@
             </div>
         </div>
         <div class="col-md-8">
-            <h2>Items</h2>
-            <table class="table">
-                <tr>
-                    <th>
-                        Item Name
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th></th>
-                    <th></th>
-                </tr>
+            <h2 align ="center">- Items -</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Item Name
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
                 @Html.HiddenFor(m => m.listID)
                 @Html.HiddenFor(m => m.changed)
                 @for (int i = 0; i < Model.items.Count; i++)
@@ -188,7 +194,7 @@
                 }
 
             </table>
-            <button type="button" id="newItemBtn" class="btn btn-info btn-block">New Todo</button>
+            <button type="button" id="newItemBtn" class="btn btn-info btn-block">New Task</button>
             <div id="itemModal" class="modalItem">
 
                 <!-- Modal content -->
