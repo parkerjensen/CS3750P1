@@ -311,8 +311,8 @@ namespace CS3750P1.Controllers
                 {
                     int completed = 0;
                     int.TryParse(button, out completed);
-                    db.Items.Where(x => x.itemID == completed).Single().isCompleted = false;
-                    model.items.Where(x => x.itemID == completed).Single().isCompleted = false;
+                    db.Items.Where(x => x.itemID == completed).Single().isCompleted = null; // false;
+                    model.items.Where(x => x.itemID == completed).Single().isCompleted = null; // false;
                     db.Items.Where(x => x.itemID == completed).Single().dateCompleted = null;
                     model.items.Where(x => x.itemID == completed).Single().dateCompleted = null;
 
