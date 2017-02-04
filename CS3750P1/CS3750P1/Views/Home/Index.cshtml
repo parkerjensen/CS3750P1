@@ -75,15 +75,15 @@
         <div class="col-md-4">
             <h2>View Lists</h2>
             <p>
-                To view all of your lists, simply click the <b class="text-info">View Lists</b> menu item or by clicking the button below.
+                To view all of your lists, simply click the <b class="text-info">View Lists</b> menu item.
             </p>
-            @*<p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>*@
         </div>
     </div>
 
     <div>
         @using (Html.BeginForm("AddList", "Home", FormMethod.Post))
         {
+            @Html.AntiForgeryToken()
         <!-- The Modal -->
             <div id="myModalListTwo" class="modalListTwo">
 

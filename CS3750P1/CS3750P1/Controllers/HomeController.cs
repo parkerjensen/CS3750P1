@@ -172,6 +172,7 @@ namespace CS3750P1.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditItems(EditListModel model, string button, string newCat = "", string newItem = "")
         {
             ViewBag.CatMessage = "";
@@ -423,6 +424,7 @@ namespace CS3750P1.Controllers
 
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ListByCategory(string catSubmit)
         {
             if (catSubmit != null && catSubmit != "")

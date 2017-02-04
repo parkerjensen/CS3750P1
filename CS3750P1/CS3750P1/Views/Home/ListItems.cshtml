@@ -98,6 +98,7 @@
 
 @using (Html.BeginForm("EditItems", "Home", FormMethod.Post, new { name = "frm", id = "frm" }))
 {
+    @Html.AntiForgeryToken()
     <div class="jumbotron">
         <div class='btn-group'>
             <h2>Edit List: @Html.EditorFor(m => m.listName, new { onkeypress = "return event.keyCode != 13;" })</h2>

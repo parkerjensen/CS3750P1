@@ -19,6 +19,7 @@
 @*took out "SubmitSelected" as first argument*@
 @using (Html.BeginForm("CategoryIndex", "Category", FormMethod.Post, new { encType = "multipart/form-data", name = "myform" }))
 {
+    @Html.AntiForgeryToken()
     <table class="table">
         <tr>
             <th>
@@ -67,6 +68,7 @@
 @*first argument use to be AddCategory, second Home*@
 @using (Html.BeginForm("CategoryIndex", "Category", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
     <div>
         <form method="POST">
             <input name="name" type="text" placeholder="Type Category Name">

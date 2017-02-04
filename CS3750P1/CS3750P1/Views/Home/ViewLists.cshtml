@@ -9,6 +9,7 @@
     <p>Select a category to filter lists from the drop down box below</p>
     @using (Html.BeginForm("ListByCategory", "Home", FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
         @Html.DropDownList("catSubmit", new SelectList(db.Categories, "categoryName", "categoryName"), "--All Categories--", new { @class = "form-control" })
 
         <div class='btn-toolbar'>
