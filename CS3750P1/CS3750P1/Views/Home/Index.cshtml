@@ -1,12 +1,14 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
-
+﻿<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ListGod.com</title>
+
+
     <style>
         /* The Modal (background) */
-        .modalList {
+        .modalListTwo {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
             z-index: 1; /* Sit on top */
@@ -21,7 +23,7 @@
         }
 
         /* Modal Content */
-        .modal-contentList {
+        .modal-contentListTwo {
             background-color: #fefefe;
             margin: auto;
             padding: 20px;
@@ -30,27 +32,28 @@
         }
 
         /* The Close Button */
-        .closeList {
+        .closeListTwo {
             color: #aaaaaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
 
-            .closeList:hover,
-            .closeList:focus {
+            .closeListTwo:hover,
+            .closeListTwo:focus {
                 color: #000;
                 text-decoration: none;
                 cursor: pointer;
             }
     </style>
+
 </head>
 <body>
 
     <div class="jumbotron">
         <h1>ListGod.com</h1>
         <p class="lead">Welcome to List God! We are a free online to do list manager. For instructions, look below.</p>
-        <p><a href="http://asp.net" class="btn btn-primary btn-lg">Start by creating a new list &raquo;</a></p>
+        <p><button type="submit">Start by creating a new list &raquo;</button></p>
     </div>
 
     <div class="row">
@@ -59,8 +62,11 @@
             <p>
                 You are now the god of your own lists! You can create a list by selecting the <b class="text-info">Create List</b> menu item or by clicking the button below.
             </p>
-            <p><button type="button" id="myBtnList" class="btn btn-info btn-sm" style="margin-top: 10px">Create List +</button></p>
+            <p>
+                <button type="button" id="myBtnListTwo" class="btn btn-info btn-sm" style="margin-top: 10px">Create List +</button>
+            </p>
         </div>
+
         <div class="col-md-4">
             <h2>Edit Lists</h2>
             <p>
@@ -72,51 +78,52 @@
             <p>
                 To view all of your lists, simply click the <b class="text-info">Lists</b> menu item or by clicking the button below.
             </p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+            @*<p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>*@
         </div>
     </div>
 
-    @using (Html.BeginForm("AddList", "Home", FormMethod.Post))
-    {
+    <div>
+        @using (Html.BeginForm("AddList", "Home", FormMethod.Post))
+        {
         <!-- The Modal -->
-        <div id="myModal" class="modal">
+            <div id="myModalListTwo" class="modalListTwo">
 
-            <!-- Modal content -->
-            <div class="modal-content" method="POST">
-                <span class="close">&times;</span>
-                <input name="newList" type="text" placeholder="New List Name">
-                <button type="submit" id="Create" name="button" value="NewList">Create</button>
+                <!-- Modal content -->
+                <div class="modal-contentListTwo" method="POST">
+                    <span class="closeListTwo">&times;</span>
+                    <input name="newList" type="text" placeholder="New List Name">
+                    <button type="submit" id="Create" name="button" value="NewList">Create</button>
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 
 </body>
 </html>
-
 <script>
-// Get the modal
-var modalList = document.getElementById('myModalList');
+    // Get the modal
+    var modalListTwo = document.getElementById('myModalListTwo');
 
-// Get the button that opens the modal
-var btnList = document.getElementById("myBtnList");
+    // Get the button that opens the modal
+    var btnListTwo = document.getElementById("myBtnListTwo");
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("closeList")[0];
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("closeListTwo")[0];
 
-// When the user clicks the button, open the modal
-btnList.onclick = function() {
-    modalList.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modalList.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modalList) {
-        modalList.style.display = "none";
+    // When the user clicks the button, open the modal
+    btnListTwo.onclick = function () {
+        modalListTwo.style.display = "block";
     }
-}
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modalListTwo.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modalListTwo) {
+            modalListTwo.style.display = "none";
+        }
+    }
 </script>
