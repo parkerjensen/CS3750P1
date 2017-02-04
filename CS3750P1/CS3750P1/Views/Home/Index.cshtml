@@ -64,7 +64,7 @@
         <div class="col-md-4">
             <h2>Edit Lists</h2>
             <p>
-                Editing lists has never been so easy! To edit an existing list, just find the list you're looking for in the <b class="text-info">Lists</b> page and click the <b class="text-info">View/Edit List</b> button.
+                Editing lists has never been so easy! To edit an existing list, just find the list you're looking for in the <b class="text-info">Lists</b> page and click the <b class="text-info">View/Edit</b> button.
             </p>
         </div>
         <div class="col-md-4">
@@ -72,23 +72,23 @@
             <p>
                 To view all of your lists, simply click the <b class="text-info">Lists</b> menu item or by clicking the button below.
             </p>
-            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+            <p>@Html.ActionLink("View Lists", "ViewLists", "Home", new { @class = "btn btn-info btn-sm" })</p>
         </div>
     </div>
 
-    @using (Html.BeginForm("AddList", "Home", FormMethod.Post))
-    {
+   @using (Html.BeginForm("AddList", "Home", FormMethod.Post))
+   {
         <!-- The Modal -->
-        <div id="myModal" class="modal">
+    <div id="myModalList" class="modalList">
 
-            <!-- Modal content -->
-            <div class="modal-content" method="POST">
-                <span class="close">&times;</span>
-                <input name="newList" type="text" placeholder="New List Name">
-                <button type="submit" id="Create" name="button" value="NewList">Create</button>
-            </div>
+        <!-- Modal content -->
+        <div class="modal-contentList" method="POST">
+            <span class="closeList">&times;</span>
+            <input name="newList" type="text" placeholder="New List Name">
+            <button type="submit" id="Create" name="button" value="NewList">Create</button>
         </div>
-    }
+    </div>
+   }
 
 </body>
 </html>
