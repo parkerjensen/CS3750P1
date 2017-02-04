@@ -261,6 +261,9 @@ namespace CS3750P1.Controllers
                     tempItem.listID = model.listID;
                     db.Items.Add(tempItem);
                     model.items.Add(tempItem);
+
+                    db.Lists.Where(x => x.listID == model.listID).Single().dateCompleted = null;
+                    db.Lists.Where(x => x.listID == model.listID).Single().isCompleted = false;
                 }
                 else if (model.changed == "CompleteItem")
                 {
@@ -285,15 +288,6 @@ namespace CS3750P1.Controllers
                             listIsComplete = false;
                             System.Diagnostics.Debug.Write("List is not complete\n");
                         }
-                        //if (db.Items.Where(x => x.itemID == completed).Single().listID == i.listID && i.isCompleted == true)
-                        //{
-                        //    System.Diagnostics.Debug.Write("Item Id of Completed Items: " + i.itemID + "\n");
-                        //}
-                        if (myListID == i.listID && i.isCompleted == true)
-                        {
-                            myListID = i.listID;
-                            System.Diagnostics.Debug.Write("My List ID:" + myListID + "\n");
-                        }
                     }
 
                     
@@ -311,8 +305,8 @@ namespace CS3750P1.Controllers
                 {
                     int completed = 0;
                     int.TryParse(button, out completed);
-                    db.Items.Where(x => x.itemID == completed).Single().isCompleted = false;
-                    model.items.Where(x => x.itemID == completed).Single().isCompleted = false;
+                    db.Items.Where(x => x.itemID == completed).Single().isCompleted = null; // false;
+                    model.items.Where(x => x.itemID == completed).Single().isCompleted = null; // false;
                     db.Items.Where(x => x.itemID == completed).Single().dateCompleted = null;
                     model.items.Where(x => x.itemID == completed).Single().dateCompleted = null;
 
@@ -326,15 +320,6 @@ namespace CS3750P1.Controllers
                         {
                             listIsComplete = false;
                             System.Diagnostics.Debug.Write("List is not complete\n");
-                        }
-                        //if (db.Items.Where(x => x.itemID == completed).Single().listID == i.listID && i.isCompleted == true)
-                        //{
-                        //    System.Diagnostics.Debug.Write("Item Id of Completed Items: " + i.itemID + "\n");
-                        //}
-                        if (myListID == i.listID && i.isCompleted == true)
-                        {
-                            myListID = i.listID;
-                            System.Diagnostics.Debug.Write("My List ID:" + myListID + "\n");
                         }
                     }
 
@@ -368,6 +353,38 @@ namespace CS3750P1.Controllers
                     int.TryParse(button, out delete);
                     db.Items.Remove(db.Items.Where(x => x.itemID == delete).Single());
                     model.items.Remove(model.items.Where(x => x.itemID == delete).Single());
+                    db.SaveChanges();
+
+                    bool listIsComplete = true;
+                    int myListID = model.listID;
+                    int count = 0;
+
+                    foreach (Item i in db.Items)
+                    {
+                        if (myListID == i.listID && i.isCompleted != true)
+                        {
+                            listIsComplete = false;
+                            System.Diagnostics.Debug.Write("List is not complete\n");
+                        }
+                        if (myListID == i.listID)
+                        {
+                            count += 1;
+                        }
+                    }
+
+
+                    if (count == 0)
+                    {
+                        db.Lists.Where(x => x.listID == myListID).Single().dateCompleted = null;
+                        db.Lists.Where(x => x.listID == myListID).Single().isCompleted = false;
+                    }
+                    else if (listIsComplete)
+                    {
+                        db.Lists.Where(x => x.listID == myListID).Single().dateCompleted = DateTime.Now;
+                        db.Lists.Where(x => x.listID == myListID).Single().isCompleted = true;
+
+                    }
+                    db.SaveChanges();
                 }
                 ModelState.Clear();
                 db.SaveChanges();

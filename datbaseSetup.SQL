@@ -4,9 +4,9 @@ GO
 CREATE DATABASE [Project1Todo]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'Project1Todo', FILENAME = N'c:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\Project1Todo.mdf' , SIZE = 3072KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+( NAME = N'Project1Todo', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.SQLEXPRESS\MSSQL\DATA\Project1Todo.mdf' , SIZE = 3072KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
  LOG ON 
-( NAME = N'Project1TodoLog', FILENAME = N'c:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\Project1Todo_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+( NAME = N'Project1TodoLog', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.SQLEXPRESS\MSSQL\DATA\Project1Todo_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
 GO
 ALTER DATABASE [Project1Todo] SET COMPATIBILITY_LEVEL = 110
 GO
@@ -75,15 +75,9 @@ ALTER DATABASE [Project1Todo] SET TARGET_RECOVERY_TIME = 0 SECONDS
 GO
 USE [Project1Todo]
 GO
-/****** Object:  User [CSMUser]    Script Date: 1/19/2017 11:53:41 AM ******/
-CREATE USER [CSMUser] FOR LOGIN [CSMUser] WITH DEFAULT_SCHEMA=[dbo]
-GO
+
 /****** Object:  User [CMSUser]    Script Date: 1/19/2017 11:53:41 AM ******/
 CREATE USER [CMSUser] FOR LOGIN [CMSUser] WITH DEFAULT_SCHEMA=[dbo]
-GO
-ALTER ROLE [db_datareader] ADD MEMBER [CSMUser]
-GO
-ALTER ROLE [db_datawriter] ADD MEMBER [CSMUser]
 GO
 ALTER ROLE [db_datareader] ADD MEMBER [CMSUser]
 GO
