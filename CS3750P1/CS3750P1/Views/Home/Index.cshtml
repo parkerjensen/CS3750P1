@@ -24,11 +24,11 @@
 
         /* Modal Content */
         .modal-contentListTwo {
-            background-color: #fefefe;
+            background-color: rgb(1,236,177);
             margin: auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+            border: 10px solid #888;
+            width: 50%;
         }
 
         /* The Close Button */
@@ -92,8 +92,10 @@
                 <!-- Modal content -->
                 <div class="modal-contentListTwo" method="POST">
                     <span class="closeListTwo">&times;</span>
-                    <input name="newList" type="text" placeholder="New List Name">
-                    <button type="submit" id="Create" name="button" value="NewList">Create</button>
+                    <div align="center">
+                        <input class="form-control input-lg" name="newList" type="text" placeholder="New List Name">
+                        <button class="btn btn-warning btn-block" type="submit" id="Create" name="button" value="NewList">Create</button>
+                    </div>
                 </div>
             </div>
         }
